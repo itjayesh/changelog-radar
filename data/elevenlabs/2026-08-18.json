@@ -1,0 +1,584 @@
+[
+  {
+    "date": "July 27, 2026",
+    "entries": [
+      {
+        "title": "ElevenAgents",
+        "description": "WhatsApp branch and environment overrides: Outbound WhatsApp messages and outbound calls now honor branch_id and environment passed in conversation_initiation_client_data. Overrides are validated before anything is sent — an unknown branch or environment is rejected with an error — and persist for the conversation, so a customer’s reply resumes on the requested branch and environment. See the WhatsApp guide for examples.\nProcedure APIs: Added eight public, branch-scoped operations for managing procedures. You can create, list, retrieve and remove procedures; create, retrieve or discard draft changes; and compile procedure drafts into an agent workflow. Procedure creation accepts name, content, type and trigger. An empty trigger creates a sub-procedure, while an omitted or null trigger is derived from the procedure content.\nKnowledge base crawl jobs: Added APIs to create, list, inspect and cancel crawl jobs. Create requests require url (string) and support crawl depth, page limits, URL patterns, sitemap URLs, folder placement, automatic synchronization and removal of unavailable documents.\nBulk knowledge base management: Added bulk dependency checks and bulk deletion for 1–20 unique document or folder IDs. Dependency checks support pagination and dependent_type; deletion returns an independent success or failure for each ID. Setting force: true also removes dependencies and recursively deletes non-empty folders.\nBatch call result export: Added Export batch call results to download recipients and conversation results from a terminal batch as CSV.\nConversation filters and analysis data: List conversations and Text search conversation messages add optional visited_agent_ids and visited_agent_branch_ids array filters, each limited to 50 values. List requests also accept data_collection_ids and evaluation_criteria_ids to include corresponding results in each conversation summary. Summaries add optional data_collection_results, evaluation_criteria_results and tag_ids.\nReferenced analysis configuration: Agent platform settings add the optional, nullable analysis_items field, typed as AgentAnalysisItems, to attach evaluation and data-collection items by reference. A null value indicates that the agent still uses the legacy inline fields; an empty value indicates a migrated agent with no attached items.\nProcedure dependency metadata: Procedure references add trigger (string) and arrays for referenced_tool_ids, referenced_kb_ids, referenced_procedure_ids and referenced_dynamic_variables.\nWebRTC token response: Get WebRTC token responses now require conversation_id (string) in addition to token. This is a breaking schema change for clients that validate or deserialize the response shape.\nKnowledge base RAG results: KnowledgeBaseRagToolResultModel adds chunks (KnowledgeBaseRagChunkModel[]) for RAG-result-in-tool-result mode."
+      },
+      {
+        "title": "Studio",
+        "description": "Draft project status: ProjectCreationMetaResponseModel.status adds draft. The project creation type now uses the shared ProjectCreationMetaType enum with the same existing values."
+      },
+      {
+        "title": "Voices",
+        "description": "Voice accents: Added GET /v1/voices/accents to list the accents available in the shared voice library. Results can be filtered by language and model_id, and each accent returns its accent, language, code and human-readable name. The accent value can be passed to the accent query parameter on Get shared voices to filter shared voices."
+      },
+      {
+        "title": "Workspaces",
+        "description": "Webhook usage reporting: WebhookUsageType adds Flows."
+      },
+      {
+        "title": "SDK Releases",
+        "description": "JavaScript SDK\n\nv2.60.0 - Added voices.accents.get to list voice accents in the shared voice library, along with the ElevenAgents procedure, knowledge base crawl job and bulk management APIs and the referenced analysis configuration from the latest schema.\n\nPython SDK\n\nv2.60.0 - Added the voice accents, ElevenAgents procedure, knowledge base crawl job and bulk management APIs from the latest schema. Also fixed AsyncConversation startup so it no longer blocks, and corrected list-of-primitive multipart fields to be sent as repeated form fields.\n\nPackages\n\n@elevenlabs/client@1.15.2 - Fixed onAudioAlignment on WebRTC transports by forwarding alignment metadata from audio messages while leaving audio playback on the LiveKit track.\n@elevenlabs/react@1.10.2, @elevenlabs/react-native@1.2.16, @elevenlabs/convai-widget-core@0.14.12 and @elevenlabs/convai-widget-embed@0.14.12 - Updated dependencies to include the WebRTC alignment fix from @elevenlabs/client@1.15.2."
+      },
+      {
+        "title": "API",
+        "description": "View API changesNew EndpointsElevenAgents\nPOST /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures\n\nCreates a procedure and returns its procedure_id (string)\nAccepts optional name (string, maximum 200 characters), content (string), type (ProcedureType, default free_form) and trigger (nullable string)\n\n\nGET /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures\n\nLists branch procedures with procedure_id, version_id, name, type, trigger and has_draft\nExcludes procedure content; retrieve an individual procedure to read its content\n\n\nGET /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}\n\nAccepts optional version_id (string); otherwise returns the version at the branch head\nReturns name, content, type and trigger\n\n\nDELETE /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}\n\nRemoves the procedure from the branch’s draft working set\n\n\nGET /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}/draft\n\nReturns the current procedure draft\n\n\nPATCH /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}/draft\n\nCreates or updates a draft\nRequires name (string, maximum 200 characters), content (string, maximum 50,000 characters) and type (ProcedureType); accepts optional trigger (nullable string)\n\n\nDELETE /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}/draft\n\nDiscards draft changes and resets the procedure to its committed version\n\n\nPOST /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/compile\n\nCompiles procedure drafts into an AgentWorkflowResponseModel\n\n\nCreate crawl job - POST /v1/convai/knowledge-base/crawl\n\nRequires url (string)\nAccepts optional max_depth (integer, 1–5, default 3), max_pages (integer, 1–10,000, default 1000), pattern (string), sitemap_urls (string array), parent_folder_id (string), enable_auto_sync (boolean, default false) and auto_remove (boolean, default false)\n\n\nList crawl jobs - GET /v1/convai/knowledge-base/crawl\n\nAccepts optional include_job_ids (string array), page_size (integer, 1–100, default 30) and cursor (string)\n\n\nGet crawl job - GET /v1/convai/knowledge-base/crawl/{crawl_job_id}\nCancel crawl job - POST /v1/convai/knowledge-base/crawl/{crawl_job_id}/cancel\nGet dependent agents for multiple documents - POST /v1/convai/knowledge-base/dependent-agents\n\nRequires document_ids (array of 1–20 unique strings)\nAccepts optional dependent_type (KnowledgeBaseDependentType, default all), page_size (integer, 1–100, default 30) and cursor (string)\n\n\nBulk delete knowledge base documents - POST /v1/convai/knowledge-base/bulk-delete\n\nRequires document_ids (array of 1–20 unique strings)\nAccepts optional force (boolean, default false)\nReturns a success or failure result for each document ID\n\n\nExport batch call results - GET /v1/convai/batch-calling/{batch_id}/export\n\nReturns terminal batch recipients and conversation results as CSV\n\n\nVoices\nGET /v1/voices/accents\n\nLists the accents available in the shared voice library\nAccepts optional language (string) and model_id (string) query parameters\nEach accent returns accent, language, code and name\n\n\nUpdated EndpointsElevenAgents\nList conversations - GET /v1/convai/conversations\n\nAdded optional visited_agent_ids and visited_agent_branch_ids string array filters, each limited to 50 values\nAdded optional data_collection_ids and evaluation_criteria_ids string arrays to select analysis results for each summary\nResponse summaries add the optional object fields data_collection_results and evaluation_criteria_results, plus the string array tag_ids\n\n\nText search conversation messages - GET /v1/convai/conversations/messages/text-search\n\nAdded optional visited_agent_ids and visited_agent_branch_ids string array filters, each limited to 50 values\n\n\nGet WebRTC token - GET /v1/convai/conversation/token\n\nResponses now require conversation_id (string)\nBreaking: strict response validators and deserializers must accept the new required field\n\n\nSchema ChangesElevenAgents\nAgent platform request and response settings add the optional, nullable analysis_items field, typed as AgentAnalysisItems, for referenced evaluation and data-collection configuration\nProcedure references add trigger (string), referenced_tool_ids (string array), referenced_kb_ids (string array), referenced_procedure_ids (string array) and referenced_dynamic_variables (string array)\nKnowledgeBaseRagToolResultModel adds chunks (KnowledgeBaseRagChunkModel[])\nStudio\nProjectCreationMetaResponseModel.status adds draft\nProjectCreationMetaResponseModel.type now references the shared ProjectCreationMetaType enum\nWorkspaces\nWebhookUsageType adds Flows"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "POST /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures\n\nCreates a procedure and returns its procedure_id (string)\nAccepts optional name (string, maximum 200 characters), content (string), type (ProcedureType, default free_form) and trigger (nullable string)\n\n\nGET /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures\n\nLists branch procedures with procedure_id, version_id, name, type, trigger and has_draft\nExcludes procedure content; retrieve an individual procedure to read its content\n\n\nGET /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}\n\nAccepts optional version_id (string); otherwise returns the version at the branch head\nReturns name, content, type and trigger\n\n\nDELETE /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}\n\nRemoves the procedure from the branch’s draft working set\n\n\nGET /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}/draft\n\nReturns the current procedure draft\n\n\nPATCH /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}/draft\n\nCreates or updates a draft\nRequires name (string, maximum 200 characters), content (string, maximum 50,000 characters) and type (ProcedureType); accepts optional trigger (nullable string)\n\n\nDELETE /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}/draft\n\nDiscards draft changes and resets the procedure to its committed version\n\n\nPOST /v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/compile\n\nCompiles procedure drafts into an AgentWorkflowResponseModel\n\n\nCreate crawl job - POST /v1/convai/knowledge-base/crawl\n\nRequires url (string)\nAccepts optional max_depth (integer, 1–5, default 3), max_pages (integer, 1–10,000, default 1000), pattern (string), sitemap_urls (string array), parent_folder_id (string), enable_auto_sync (boolean, default false) and auto_remove (boolean, default false)\n\n\nList crawl jobs - GET /v1/convai/knowledge-base/crawl\n\nAccepts optional include_job_ids (string array), page_size (integer, 1–100, default 30) and cursor (string)\n\n\nGet crawl job - GET /v1/convai/knowledge-base/crawl/{crawl_job_id}\nCancel crawl job - POST /v1/convai/knowledge-base/crawl/{crawl_job_id}/cancel\nGet dependent agents for multiple documents - POST /v1/convai/knowledge-base/dependent-agents\n\nRequires document_ids (array of 1–20 unique strings)\nAccepts optional dependent_type (KnowledgeBaseDependentType, default all), page_size (integer, 1–100, default 30) and cursor (string)\n\n\nBulk delete knowledge base documents - POST /v1/convai/knowledge-base/bulk-delete\n\nRequires document_ids (array of 1–20 unique strings)\nAccepts optional force (boolean, default false)\nReturns a success or failure result for each document ID\n\n\nExport batch call results - GET /v1/convai/batch-calling/{batch_id}/export\n\nReturns terminal batch recipients and conversation results as CSV"
+      },
+      {
+        "title": "Voices",
+        "description": "GET /v1/voices/accents\n\nLists the accents available in the shared voice library\nAccepts optional language (string) and model_id (string) query parameters\nEach accent returns accent, language, code and name\n\nUpdated Endpoints"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "List conversations - GET /v1/convai/conversations\n\nAdded optional visited_agent_ids and visited_agent_branch_ids string array filters, each limited to 50 values\nAdded optional data_collection_ids and evaluation_criteria_ids string arrays to select analysis results for each summary\nResponse summaries add the optional object fields data_collection_results and evaluation_criteria_results, plus the string array tag_ids\n\n\nText search conversation messages - GET /v1/convai/conversations/messages/text-search\n\nAdded optional visited_agent_ids and visited_agent_branch_ids string array filters, each limited to 50 values\n\n\nGet WebRTC token - GET /v1/convai/conversation/token\n\nResponses now require conversation_id (string)\nBreaking: strict response validators and deserializers must accept the new required field\n\nSchema Changes"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Agent platform request and response settings add the optional, nullable analysis_items field, typed as AgentAnalysisItems, for referenced evaluation and data-collection configuration\nProcedure references add trigger (string), referenced_tool_ids (string array), referenced_kb_ids (string array), referenced_procedure_ids (string array) and referenced_dynamic_variables (string array)\nKnowledgeBaseRagToolResultModel adds chunks (KnowledgeBaseRagChunkModel[])"
+      },
+      {
+        "title": "Studio",
+        "description": "ProjectCreationMetaResponseModel.status adds draft\nProjectCreationMetaResponseModel.type now references the shared ProjectCreationMetaType enum"
+      },
+      {
+        "title": "Workspaces",
+        "description": "WebhookUsageType adds Flows"
+      }
+    ],
+    "product_page_url": "https://elevenlabs.io/docs/changelog/2026/7/27",
+    "input": {
+      "url": "https://elevenlabs.io/docs/changelog"
+    }
+  },
+  {
+    "date": "June 22, 2026",
+    "entries": [
+      {
+        "title": "ElevenAgents",
+        "description": "Branch rebase: Added POST /v1/convai/agents/{agent_id}/branches/{branch_id}/rebase to rebase a branch onto the latest main while preserving branch-specific changes. Agent version parent models add optional rebased_from_version_id (string) to track the source version after a rebase.\nConversation product filtering: List conversations and Text search conversation messages add optional conversation_product_type query parameter (agents | speech_engine) to filter results by product. Conversation models introduce ConversationProduct for this distinction.\nConversation termination filtering: List conversations adds optional termination_reasons query parameter (array of strings) to filter conversations by how they ended.\nPer-agent topic discovery: Create agent and Update agent platform settings add optional topic_discovery (TopicDiscoverySettings) for per-agent topic discovery configuration.\nBackground sound configuration: Agent platform and conversation configuration models add optional background_sound (BackgroundSoundConfig) for ambient audio during conversations.\nTurn interruption ignore terms: Turn configuration schemas add optional interruption_ignore_terms (array of strings) to suppress turn detection on specific phrases.\nSoft timeout filler randomization: Soft timeout configuration adds optional randomize_fillers (boolean) to shuffle filler messages across soft timeouts. Soft timeout message and LLM prompt override fields now support dynamic variables.\nTranscript user identifiers: Transcript message models add optional user_identifier (string) on user-authored messages.\nSimulation success conditions: Agent simulation test schemas add optional success_conditions (array, up to 30 items). The legacy success_condition field is deprecated in favor of the array form.\nAgent test repeat limit: Run tests on the agent raises the maximum repeat_count from 20 to 50.\nTool schema dynamic allowed values: ElevenAgents tool JSON schema properties add optional allowed_values_dynamic_variable (string) for server-verified LLM value picks sourced from dynamic variables.\nWidget signed URL docs: Get widget updates conversation_signature documentation to reference /v1/convai/conversation/get_signed_url."
+      },
+      {
+        "title": "Music",
+        "description": "Higher-quality output formats: Generate music, Generate music detailed and Stream music add mp3_48000_240 and mp3_48000_320 to supported output_format values. When output_format is auto, v2 models now default to mp3_48000_192 instead of mp3_48000_128.\nSection duration flag clarification: respect_sections_durations applies only with composition_plan on music_v1. On music_v2, section durations are always enforced and this flag is ignored.\nComposition plan schema split: Music request composition_plan uses a oneOf union of MusicPrompt and CompositionPlan. The former is used for music_v1 composition plans and the latter for music_v2."
+      },
+      {
+        "title": "Dubbing",
+        "description": "Project list filters: List dubs adds optional dubbing_statuses, dubbing_models, target_language_codes and creation_sources array query parameters for filtered listing. The order_by parameter now accepts name in addition to created_at."
+      },
+      {
+        "title": "Workspaces",
+        "description": "Lock and disable reasons: Workspace and API key models add LockReason and optional disable_reason fields. Workspace group settings add optional scim_frozen (boolean) for SCIM-managed freeze state."
+      },
+      {
+        "title": "ElevenCreative Studio",
+        "description": "Caption animations: Studio caption enter and exit animation enums add pop, slide_up and slide_down."
+      },
+      {
+        "title": "SDK Releases",
+        "description": "JavaScript SDK\n\nv2.54.0 - Regenerated from the latest OpenAPI schema with branch rebase client support, conversation list and text-search conversation_product_type and termination_reasons filters, dubbing list multi-value filters, music-specific output_format types, topic discovery settings, and removal of coaching-related exported types.\nv2.53.1 - Restored optional values in DynamicVariablesConfig records that were incorrectly narrowed in v2.53.0.\n\nPython SDK\n\nv2.54.0 - Regenerated from the latest OpenAPI schema with branch rebase client support, conversation list and text-search filters, dubbing list multi-value filters, music output format updates, topic discovery settings, and removal of coaching-related exported types. ElevenLabs and AsyncElevenLabs now accept headers and follow_redirects passthrough to the base client.\n\nPackages\n\n@elevenlabs/client@1.12.0 - Added overrides.asr.keywords support on the browser client so per-conversation ASR keyword biasing can be sent via conversation_initiation_client_data.\n@elevenlabs/react@1.7.0 - Exposed includeLanguageDetection for realtime Scribe sessions, including React useScribe support for requesting and reading detected language metadata.\n@elevenlabs/react-native@1.2.9, @elevenlabs/types@0.15.0, @elevenlabs/convai-widget-core@0.14.4 and @elevenlabs/convai-widget-embed@0.14.4 - Dependency alignment to @elevenlabs/client@1.12.0 and @elevenlabs/types@0.15.0.\n@elevenlabs/client@1.12.1 - Exposed the file upload helper from the internal Unity entrypoint.\n@elevenlabs/react@1.7.1, @elevenlabs/react-native@1.2.10, @elevenlabs/convai-widget-core@0.14.5 and @elevenlabs/convai-widget-embed@0.14.5 - Dependency alignment to @elevenlabs/client@1.12.1.\n\nMCP Server\n\nv0.10.0 - Added Music v2 model and endpoints, MCP tool annotations for all 24 tools, Python 3.14 support, Singapore data residency, EU/IN residency shorthand aliases, graceful shutdown handling for client disconnections, and fixes for voice preview creation and output directory path resolution."
+      },
+      {
+        "title": "API",
+        "description": "View API changesNew EndpointsElevenAgents\nPOST /v1/convai/agents/{agent_id}/branches/{branch_id}/rebase - Rebases a branch onto the latest main while preserving branch-specific changes\nUpdated EndpointsElevenAgents\nList conversations - GET /v1/convai/conversations\n\nAdded optional conversation_product_type query parameter (agents | speech_engine)\nAdded optional termination_reasons query parameter (array of strings)\n\n\nText search conversation messages - GET /v1/convai/conversations/messages/text-search\n\nAdded optional conversation_product_type query parameter (agents | speech_engine)\n\n\nGet widget - GET /v1/convai/agents/{agent_id}/widget\n\nUpdated conversation_signature documentation to reference /v1/convai/conversation/get_signed_url\n\n\nRun tests on the agent - POST /v1/convai/agents/{agent_id}/run-tests\n\nRaised maximum repeat_count from 20 to 50\n\n\nDubbing\nList dubs - GET /v1/dubbing\n\nAdded optional dubbing_statuses, dubbing_models, target_language_codes and creation_sources query parameters\norder_by now accepts name in addition to created_at\n\n\nMusic\nGenerate music, Generate music detailed and Stream music\n\nAdded mp3_48000_240 and mp3_48000_320 to supported output_format values\nauto output format selects mp3_48000_192 for v2 models (previously mp3_48000_128)\n\n\nSchema ChangesElevenAgents\nAgent branches and versions\n\nAdded optional rebased_from_version_id on agent version parent models\n\n\nPlatform and conversation configuration\n\nAdded optional topic_discovery (TopicDiscoverySettings) on platform settings request and response models\nAdded optional background_sound (BackgroundSoundConfig)\n\n\nTurn and timeout configuration\n\nAdded optional interruption_ignore_terms (array of strings) on turn config schemas\nAdded optional randomize_fillers (boolean) on soft timeout config\n\n\nTranscripts and simulation\n\nAdded optional user_identifier (string) on transcript user messages\nAdded optional success_conditions (array, max 30); deprecated success_condition\n\n\nTool JSON schema properties\n\nAdded optional allowed_values_dynamic_variable (string)\n\n\nMusic\nComposition plans\n\ncomposition_plan request field uses oneOf (MusicPrompt | CompositionPlan)\nClarified respect_sections_durations behavior for music_v1 vs music_v2\n\n\nWorkspaces\nAdded LockReason enum and optional disable_reason fields\nAdded optional scim_frozen (boolean) on workspace group settings\nElevenCreative Studio\nCaption animation enums add pop, slide_up and slide_down\nRemoved SchemasElevenAgents\nRemoved coaching-related settings schemas (CoachedAgentSettings, CoachingAgentSettings, NoCoachingSettings)"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "POST /v1/convai/agents/{agent_id}/branches/{branch_id}/rebase - Rebases a branch onto the latest main while preserving branch-specific changes\n\nUpdated Endpoints"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "List conversations - GET /v1/convai/conversations\n\nAdded optional conversation_product_type query parameter (agents | speech_engine)\nAdded optional termination_reasons query parameter (array of strings)\n\n\nText search conversation messages - GET /v1/convai/conversations/messages/text-search\n\nAdded optional conversation_product_type query parameter (agents | speech_engine)\n\n\nGet widget - GET /v1/convai/agents/{agent_id}/widget\n\nUpdated conversation_signature documentation to reference /v1/convai/conversation/get_signed_url\n\n\nRun tests on the agent - POST /v1/convai/agents/{agent_id}/run-tests\n\nRaised maximum repeat_count from 20 to 50"
+      },
+      {
+        "title": "Dubbing",
+        "description": "List dubs - GET /v1/dubbing\n\nAdded optional dubbing_statuses, dubbing_models, target_language_codes and creation_sources query parameters\norder_by now accepts name in addition to created_at"
+      },
+      {
+        "title": "Music",
+        "description": "Generate music, Generate music detailed and Stream music\n\nAdded mp3_48000_240 and mp3_48000_320 to supported output_format values\nauto output format selects mp3_48000_192 for v2 models (previously mp3_48000_128)\n\nSchema Changes"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Agent branches and versions\n\nAdded optional rebased_from_version_id on agent version parent models\n\n\nPlatform and conversation configuration\n\nAdded optional topic_discovery (TopicDiscoverySettings) on platform settings request and response models\nAdded optional background_sound (BackgroundSoundConfig)\n\n\nTurn and timeout configuration\n\nAdded optional interruption_ignore_terms (array of strings) on turn config schemas\nAdded optional randomize_fillers (boolean) on soft timeout config\n\n\nTranscripts and simulation\n\nAdded optional user_identifier (string) on transcript user messages\nAdded optional success_conditions (array, max 30); deprecated success_condition\n\n\nTool JSON schema properties\n\nAdded optional allowed_values_dynamic_variable (string)"
+      },
+      {
+        "title": "Music",
+        "description": "Composition plans\n\ncomposition_plan request field uses oneOf (MusicPrompt | CompositionPlan)\nClarified respect_sections_durations behavior for music_v1 vs music_v2"
+      },
+      {
+        "title": "Workspaces",
+        "description": "Added LockReason enum and optional disable_reason fields\nAdded optional scim_frozen (boolean) on workspace group settings"
+      },
+      {
+        "title": "ElevenCreative Studio",
+        "description": "Caption animation enums add pop, slide_up and slide_down\n\nRemoved Schemas"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Removed coaching-related settings schemas (CoachedAgentSettings, CoachingAgentSettings, NoCoachingSettings)"
+      }
+    ],
+    "product_page_url": "https://elevenlabs.io/docs/changelog/2026/6/22",
+    "input": {
+      "url": "https://elevenlabs.io/docs/changelog"
+    }
+  },
+  {
+    "date": "July 6, 2026",
+    "entries": [
+      {
+        "title": "Music",
+        "description": "Stream music with details: Added Stream music with details (POST /v1/music/detailed/stream) for SSE streaming of composed audio plus detailed metadata, including composition plan, song metadata, base64 audio chunks and optional word timestamps via with_timestamps."
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Simulate conversation deprecation: Simulate conversation and Stream simulate conversation are deprecated in favor of Create test and Run tests on the agent.\nTool interruption mode: disable_interruptions is deprecated across agent tool and MCP server schemas. Use interruption_mode (ToolInterruptionMode: allow, disable_during_tool, disable_during_tool_and_turn) instead, with per-tool overrides via interruption_mode on tool override models.\nNumeric evaluation scoring: Evaluation criteria schemas add optional scoring_mode (binary | numeric_uniform), optional max_score (integer) and optional score_instructions (string). Evaluation results add optional numeric score. Conversation analysis payloads add optional call_success_score and success_score.\nConversation reasoning: Transcript and history models add optional reasoning (ConversationReasoningModel) and transcript responses add optional reasoned (boolean). Agent prompt and LLM schemas add optional enable_reasoning_summary (boolean).\nConversation platform billing: Conversation-related models add optional platform_charge, platform_price and platform_usage with per-category breakdown via PlatformCategory and PlatformCategoryUsage.\nConversation cost metadata: Conversation history metadata adds required read-only cost_fiat (number, USD).\nUnredacted webhook events: WebhookEventType adds unredacted_transcript and unredacted_audio for webhook subscriptions that need unredacted payloads.\nWorkflow phone transfer UUI limit: UUITransferConfig.data maximum length increases from 256 to 8192 characters for RFC 7433 User-to-User Information on SIP REFER transfers."
+      },
+      {
+        "title": "Speech Engine",
+        "description": "Optional authentication bypass: JavaScript and Python SDK v2.56.0 add optional disableAuth / disable_auth on Speech Engine WebSocket clients. This is intended for integrations that protect the connection through other means, such as IP allowlisting or custom authentication headers, rather than API key authentication."
+      },
+      {
+        "title": "Workspaces",
+        "description": "Professional voice slot tracking: Subscription-style models add optional professional_voice_slots_used_in_workspace alongside clarified group-wide professional_voice_slots_used for consolidated billing visibility."
+      },
+      {
+        "title": "ElevenCreative Studio",
+        "description": "Caption styling: Caption style models add blur and border-radius fields. Enter and exit animation enums add slam, scale_down and slide_in."
+      },
+      {
+        "title": "SDK Releases",
+        "description": "JavaScript SDK\n\nv2.56.0 - Added optional disableAuth on Speech Engine WebSocket clients. Regenerated from the latest OpenAPI schema with music detailed streaming, tool interruption_mode, evaluation scoring modes, conversation reasoning and platform billing fields.\n\nPython SDK\n\nv2.56.0 - Added optional disable_auth on Speech Engine WebSocket clients. Regenerated from the latest OpenAPI schema with music detailed streaming, tool interruption_mode, evaluation scoring modes, conversation reasoning and platform billing fields.\n\nCLI\n\n@elevenlabs/cli@0.5.5 - Agent create and update requests are now sent as raw JSON to preserve configuration round-trip fidelity."
+      },
+      {
+        "title": "API",
+        "description": "View API changesNew EndpointsMusic\nStream music with details - POST /v1/music/detailed/stream\nUpdated EndpointsElevenAgents\nSimulate conversation - POST /v1/convai/agents/{agent_id}/simulate-conversation\n\nMarked deprecated; use Create test and Run tests on the agent instead\n\n\nStream simulate conversation - POST /v1/convai/agents/{agent_id}/simulate-conversation/stream\n\nMarked deprecated; use Create test and Run tests on the agent instead\n\n\nSchema ChangesElevenAgents\nTools and MCP\n\nDeprecated disable_interruptions in favor of interruption_mode (allow, disable_during_tool, disable_during_tool_and_turn)\nAdded per-tool interruption_mode overrides on MCP and tool override models\n\n\nEvaluation and analysis\n\nAdded optional scoring_mode, max_score and score_instructions on evaluation criteria\nAdded optional numeric score on evaluation results\nAdded optional call_success_score and success_score on conversation analysis payloads\n\n\nTranscripts and reasoning\n\nAdded optional reasoning (ConversationReasoningModel) on transcript and history models\nAdded optional reasoned (boolean) on transcript responses\nAdded optional enable_reasoning_summary (boolean) on agent prompt and LLM schemas\n\n\nBilling and metadata\n\nAdded optional platform_charge, platform_price and platform_usage on conversation models\nAdded required read-only cost_fiat (USD) on conversation history metadata\n\n\nWebhooks\n\nAdded unredacted_transcript and unredacted_audio to WebhookEventType\n\n\nWorkflows\n\nIncreased UUITransferConfig.data max length from 256 to 8192 characters\n\n\nWorkspaces\nBilling\n\nAdded optional professional_voice_slots_used_in_workspace on subscription-style models\n\n\nElevenCreative Studio\nCaptions\n\nAdded blur and border-radius fields on caption style models\nAdded slam, scale_down and slide_in animation types"
+      },
+      {
+        "title": "Music",
+        "description": "Stream music with details - POST /v1/music/detailed/stream\n\nUpdated Endpoints"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Simulate conversation - POST /v1/convai/agents/{agent_id}/simulate-conversation\n\nMarked deprecated; use Create test and Run tests on the agent instead\n\n\nStream simulate conversation - POST /v1/convai/agents/{agent_id}/simulate-conversation/stream\n\nMarked deprecated; use Create test and Run tests on the agent instead\n\nSchema Changes"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Tools and MCP\n\nDeprecated disable_interruptions in favor of interruption_mode (allow, disable_during_tool, disable_during_tool_and_turn)\nAdded per-tool interruption_mode overrides on MCP and tool override models\n\n\nEvaluation and analysis\n\nAdded optional scoring_mode, max_score and score_instructions on evaluation criteria\nAdded optional numeric score on evaluation results\nAdded optional call_success_score and success_score on conversation analysis payloads\n\n\nTranscripts and reasoning\n\nAdded optional reasoning (ConversationReasoningModel) on transcript and history models\nAdded optional reasoned (boolean) on transcript responses\nAdded optional enable_reasoning_summary (boolean) on agent prompt and LLM schemas\n\n\nBilling and metadata\n\nAdded optional platform_charge, platform_price and platform_usage on conversation models\nAdded required read-only cost_fiat (USD) on conversation history metadata\n\n\nWebhooks\n\nAdded unredacted_transcript and unredacted_audio to WebhookEventType\n\n\nWorkflows\n\nIncreased UUITransferConfig.data max length from 256 to 8192 characters"
+      },
+      {
+        "title": "Workspaces",
+        "description": "Billing\n\nAdded optional professional_voice_slots_used_in_workspace on subscription-style models"
+      },
+      {
+        "title": "ElevenCreative Studio",
+        "description": "Captions\n\nAdded blur and border-radius fields on caption style models\nAdded slam, scale_down and slide_in animation types"
+      }
+    ],
+    "product_page_url": "https://elevenlabs.io/docs/changelog/2026/7/6",
+    "input": {
+      "url": "https://elevenlabs.io/docs/changelog"
+    }
+  },
+  {
+    "date": "August 3, 2026",
+    "entries": [
+      {
+        "title": "ElevenAgents",
+        "description": "Test-specific tool mocks: Agent simulations and unit tests can now define tool_mock_overrides, keyed by tool ID, to replace shared mocks for one test. ToolResponseMockConfig also adds optional is_error (boolean, default false) so a mock can exercise tool-failure paths.\nTranslated workflow messages: Literal Say node messages add text_translations, a map of language keys to TranslatedString objects. The field is optional on input and required on output, so strict response validators must accept it.\nConversation version filters: List conversations and Text search conversation messages add the optional version_id query parameter (string) to filter results by agent version.\nKnowledge base system tool: Agent configuration adds a knowledge_base system tool with configurable enabled_strategies (SearchStrategy[]). Agent knowledge base RAG queries add optional use_agent_defaults (boolean, default true); set it to false to use neutral retrieval settings while retaining the agent’s embedding model.\nAgent voice activity detection: Agent create, update, response and workflow-override schemas add vad configuration. VADConfig currently supports background_voice_detection (boolean, default false).\nWebSocket custom LLMs: CustomLLMAPIType adds websocket.\nFile memory controls: Widget file-input configuration adds max_files_in_memory (integer, 1–30, default 10). Files beyond the limit are summarized and released from memory; max_files_per_conversation must be -1 or at least the memory limit.\nDTMF input redaction: DTMFInputConfig adds optional redact_input (boolean, default false) to replace caller keypad digits in transcripts, conversation logs and analysis. Digits repeated by the agent or passed to tools remain unchanged."
+      },
+      {
+        "title": "Speech to Text",
+        "description": "Realtime entity detection: Scribe v2 Realtime adds the entity_detection query option. It accepts all, one entity type or category, or an array of types and categories, and emits detected entities in committed_transcript_entities events. See the entity detection guide for supported categories."
+      },
+      {
+        "title": "Voices",
+        "description": "Voice replication across data residencies: Added POST /v1/voices/{voice_id}/replicate-to-isolated-environment for copying an Instant Voice Clone or Voice Design voice to a workspace in the same consolidated billing group. Requests require target_workspace_id (string) and accept preserve_voice_id (boolean, default true); responses return the target voice_id.\nCharacter metadata: Character responses add recommended_voice_ids (string array, default []), metadata adds nullable role (CharacterRole), and CharacterAge replaces middle-aged with middle_aged."
+      },
+      {
+        "title": "SDK Releases",
+        "description": "Packages\n\n@elevenlabs/client@1.16.0, @elevenlabs/react@1.11.0, @elevenlabs/types@0.18.0, @elevenlabs/react-native@1.2.17 and @elevenlabs/convai-widget-core@0.15.0 - Added onAgentReasoningResponsePart, which receives streaming agent reasoning events with start, delta and stop types.\n@elevenlabs/convai-widget-core@0.15.0 and @elevenlabs/convai-widget-embed@0.15.0 - Added show_resize_button and the show-resize-button embed attribute. Set either to false to hide the widget header’s expand and collapse control.\n@elevenlabs/client@1.17.0, @elevenlabs/react@1.12.0, @elevenlabs/types@0.19.0, @elevenlabs/react-native@1.2.18 and @elevenlabs/convai-widget-core@0.15.1 - Added the enableLogging option to Scribe.connect and useScribe. Setting it to false starts an enterprise zero-retention session. The Scribe session_started type now reports enable_logging; the unused disable_logging field was removed.\n\nMCP Server\n\nv0.12.1 - Includes the v0.11 tool updates and a dependency refresh that resolves 44 security alerts.\nv0.11.0 - Added simulate_conversation with configurable simulated-user behavior, evaluation criteria, transcript output and pass/fail analysis. The speech_to_text tool now defaults to scribe_v2, and voice_clone now sends audio file contents instead of path strings."
+      },
+      {
+        "title": "API",
+        "description": "View API changesNew EndpointsVoices\nPOST /v1/voices/{voice_id}/replicate-to-isolated-environment\n\nReplicates an Instant Voice Clone or Voice Design voice into another workspace’s isolated environment\nRequires target_workspace_id (string)\nAccepts optional preserve_voice_id (boolean, default true)\nReturns required voice_id (string)\n\n\nUpdated EndpointsElevenAgents\nList conversations - GET /v1/convai/conversations\n\nAdded optional version_id (string) query parameter\n\n\nText search conversation messages - GET /v1/convai/conversations/messages/text-search\n\nAdded optional version_id (string) query parameter\n\n\nPOST /v1/convai/agents/{agent_id}/knowledge-base/rag-query\n\nAdded optional use_agent_defaults (boolean, default true) request field\n\n\nSchema ChangesElevenAgents\nSimulation and unit-test payloads add optional tool_mock_overrides maps; ToolResponseMockConfig adds optional is_error (boolean, default false)\nSayNodeLiteralMessage adds text_translations (map of TranslatedString); the field is optional on input and required on output\nAgent configuration adds knowledge_base (KnowledgeBaseToolConfig) and vad (VADConfig)\nCustomLLMAPIType adds websocket\nFileInputConfig adds max_files_in_memory (integer, 1–30, default 10)\nDTMFInputConfig adds optional redact_input (boolean, default false)\nRealtime agent configuration now defaults to eleven_realtime_v1_mini\nVoices\nCharacter responses add recommended_voice_ids (string array, default [])\nCharacter metadata adds nullable role (CharacterRole)\nBreaking: CharacterAge replaces middle-aged with middle_aged; clients sending the old value must migrate\nText to Speech\nBreaking: removed AudioFilterId and audio_filter from ElevenAgents Text to Speech configuration schemas"
+      },
+      {
+        "title": "Voices",
+        "description": "POST /v1/voices/{voice_id}/replicate-to-isolated-environment\n\nReplicates an Instant Voice Clone or Voice Design voice into another workspace’s isolated environment\nRequires target_workspace_id (string)\nAccepts optional preserve_voice_id (boolean, default true)\nReturns required voice_id (string)\n\nUpdated Endpoints"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "List conversations - GET /v1/convai/conversations\n\nAdded optional version_id (string) query parameter\n\n\nText search conversation messages - GET /v1/convai/conversations/messages/text-search\n\nAdded optional version_id (string) query parameter\n\n\nPOST /v1/convai/agents/{agent_id}/knowledge-base/rag-query\n\nAdded optional use_agent_defaults (boolean, default true) request field\n\nSchema Changes"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Simulation and unit-test payloads add optional tool_mock_overrides maps; ToolResponseMockConfig adds optional is_error (boolean, default false)\nSayNodeLiteralMessage adds text_translations (map of TranslatedString); the field is optional on input and required on output\nAgent configuration adds knowledge_base (KnowledgeBaseToolConfig) and vad (VADConfig)\nCustomLLMAPIType adds websocket\nFileInputConfig adds max_files_in_memory (integer, 1–30, default 10)\nDTMFInputConfig adds optional redact_input (boolean, default false)\nRealtime agent configuration now defaults to eleven_realtime_v1_mini"
+      },
+      {
+        "title": "Voices",
+        "description": "Character responses add recommended_voice_ids (string array, default [])\nCharacter metadata adds nullable role (CharacterRole)\nBreaking: CharacterAge replaces middle-aged with middle_aged; clients sending the old value must migrate"
+      },
+      {
+        "title": "Text to Speech",
+        "description": "Breaking: removed AudioFilterId and audio_filter from ElevenAgents Text to Speech configuration schemas"
+      }
+    ],
+    "product_page_url": "https://elevenlabs.io/docs/changelog/2026/8/3",
+    "input": {
+      "url": "https://elevenlabs.io/docs/changelog"
+    }
+  },
+  {
+    "date": "August 10, 2026",
+    "entries": [
+      {
+        "title": "Dubbing v2 API",
+        "description": "Dubbing v2 is now available through the API. It translates audio and video into more than 90 languages while preserving each speaker’s voice, tone and pacing.\n\nThe new project-based API keeps source transcripts and translations as editable JSON. Create a project from a file or URL, add one or more target languages, edit individual transcript segments or translations, then regenerate only the regions that changed. Follow the Dubbing quickstart to create your first dub.\n\n\n\nQuickstartCreate your first Dubbing v2 project and generate a translated audio track.Refine and regenerateEdit source transcripts and translations, then regenerate changed regions.API referenceExplore Dubbing project, language and transcript endpoints."
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Conversation guardrail filters: List conversations adds optional guardrail_types (GuardrailType[]) and custom_guardrail_names (string array) query parameters. The existing conversation hierarchy can now be filtered with optional parent_conversation_id (string).\nBranch divergence status: List agent branches adds optional include_commit_status (boolean, default false). When enabled, branch summaries include nullable commits_ahead, commits_behind and merged_into_branch_id fields.\nConversation and tool controls: Client overrides now support max_duration_seconds and pronunciation_dictionary_locators. MCP server configuration adds request_meta for passing MCP _meta values to tool calls, and webhook tool timeouts now support up to 300 seconds.\nPost-call analysis usage: Conversation charging adds an analysis breakdown with per-feature running totals and run snapshots. Transcript messages add triggered_guardrails, and conversation turns add optional producing_llm."
+      },
+      {
+        "title": "Voices",
+        "description": "Voice search filters: Get all voices v2 adds optional gender, age, language, accent, use_cases, min_notice_period_days, include_custom_rates, include_live_moderated and high_quality query parameters."
+      },
+      {
+        "title": "SDK Releases",
+        "description": "JavaScript SDK\n\nv2.63.0 - Added realtime Speech to Text options for secondary languages, language and entity detection, background audio filtering, logging and single-use token authentication. Added final transcript, entity and invalid request events; fixed unaccepted terms dispatch, duplicate audio_format parameters and inclusive VAD bounds.\nv2.62.0 - Added Dubbing bulk transcript update methods and DubbingRegenerateResponse; added conversation guardrail filters, agent branch commit status, agent alerting and MCP requestMeta support. Language target creation no longer accepts modelId.\nv2.61.0 - Added conversation hierarchy filtering, post-call analysis charging, triggered guardrail metadata, branch merge conflict details, DTMF input redaction and Dubbing transcript uploads. Removed exported OpenAI realtime session types and run_subagent_* tool-result variants.\n\nPython SDK\n\nv2.63.0 - Added realtime Speech to Text options for secondary languages, language and entity detection, background audio filtering, logging and single-use token authentication. Added final transcript, entity and invalid request events; fixed unaccepted terms dispatch and now rejects connections without an API key or token.\nv2.62.0 - Added Dubbing update_segments methods and DubbingRegenerateResponse; added guardrail_types, custom_guardrail_names, include_commit_status and MCP request_meta support. Dubbing segment updates now use request body models, and language target creation no longer accepts model_id.\nv2.61.0 - Added parent_conversation_id, analysis charging, triggered guardrail metadata, branch merge conflicts, DTMF input redaction and Dubbing transcript uploads. Removed OpenAI realtime session types and run_subagent_* result models.\n\nAndroid SDK\n\nv0.12.1 - Fixed intentional text-only session disconnects being reported as ConversationStatus.ERROR.\nv0.12.0 - Added ConversationConfig.useMediaStream for routing conversation audio through the Android media stream. Remote normal WebSocket closures now report DisconnectionDetails.Agent, while locally initiated closures report DisconnectionDetails.User.\n\nMCP Server\n\nv0.12.2 - Fixed an issue with path traversal."
+      },
+      {
+        "title": "API",
+        "description": "View API changesNew EndpointsDubbing\nBatch update source segments - PATCH /v1/dubbing/project/{project_id}/transcript/segments\n\nRequires DubbingBulkSegmentUpdateRequest\nAtomically updates source segment text, speaker or timing\nReturns DubbingBulkSourceSegmentUpdateResponse with the updated segments and revision\n\n\nBatch update target segments - PATCH /v1/dubbing/project/{project_id}/language/{language_id}/transcript/segments\n\nRequires DubbingBulkTargetSegmentUpdateRequest\nAtomically updates translations for multiple target segments\nReturns DubbingBulkTargetSegmentUpdateResponse with the updated segments and revision\n\n\nUpdated EndpointsElevenAgents\nList conversations - GET /v1/convai/conversations\n\nAdded optional parent_conversation_id (string)\nAdded optional repeatable guardrail_types (GuardrailType[]) and custom_guardrail_names (string array)\n\n\nList agent branches - GET /v1/convai/agents/{agent_id}/branches\n\nAdded optional include_commit_status (boolean, default false)\nBranch summaries add nullable commits_ahead (integer), commits_behind (integer) and merged_into_branch_id (string)\n\n\nVoices\nGet all voices v2 - GET /v2/voices\n\nAdded optional gender, age and accent (string) filters\nAdded optional language and use_cases (string array) filters\nAdded optional min_notice_period_days (integer), include_custom_rates, include_live_moderated and high_quality (boolean) filters\n\n\nSchema ChangesElevenAgents\nClient override schemas add max_duration_seconds (integer) and pronunciation_dictionary_locators (array)\nMCP server input and output schemas add request_meta maps\nAgent platform settings add alerting; language detection adds only_at_conversation_start (boolean)\nAnalysisCharging.last_run is now required and non-nullable; running totals add required runs (integer)\nRAG chunk responses now require content_format and document_type"
+      },
+      {
+        "title": "Dubbing",
+        "description": "Batch update source segments - PATCH /v1/dubbing/project/{project_id}/transcript/segments\n\nRequires DubbingBulkSegmentUpdateRequest\nAtomically updates source segment text, speaker or timing\nReturns DubbingBulkSourceSegmentUpdateResponse with the updated segments and revision\n\n\nBatch update target segments - PATCH /v1/dubbing/project/{project_id}/language/{language_id}/transcript/segments\n\nRequires DubbingBulkTargetSegmentUpdateRequest\nAtomically updates translations for multiple target segments\nReturns DubbingBulkTargetSegmentUpdateResponse with the updated segments and revision\n\nUpdated Endpoints"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "List conversations - GET /v1/convai/conversations\n\nAdded optional parent_conversation_id (string)\nAdded optional repeatable guardrail_types (GuardrailType[]) and custom_guardrail_names (string array)\n\n\nList agent branches - GET /v1/convai/agents/{agent_id}/branches\n\nAdded optional include_commit_status (boolean, default false)\nBranch summaries add nullable commits_ahead (integer), commits_behind (integer) and merged_into_branch_id (string)"
+      },
+      {
+        "title": "Voices",
+        "description": "Get all voices v2 - GET /v2/voices\n\nAdded optional gender, age and accent (string) filters\nAdded optional language and use_cases (string array) filters\nAdded optional min_notice_period_days (integer), include_custom_rates, include_live_moderated and high_quality (boolean) filters\n\nSchema Changes"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Client override schemas add max_duration_seconds (integer) and pronunciation_dictionary_locators (array)\nMCP server input and output schemas add request_meta maps\nAgent platform settings add alerting; language detection adds only_at_conversation_start (boolean)\nAnalysisCharging.last_run is now required and non-nullable; running totals add required runs (integer)\nRAG chunk responses now require content_format and document_type"
+      }
+    ],
+    "product_page_url": "https://elevenlabs.io/docs/changelog/2026/8/10",
+    "input": {
+      "url": "https://elevenlabs.io/docs/changelog"
+    }
+  },
+  {
+    "date": "July 13, 2026",
+    "entries": [
+      {
+        "title": "ElevenAgents",
+        "description": "Per-agent sentiment analysis: Platform settings add optional sentiment_analysis (SentimentAnalysisSettings) for post-call sentiment scoring configuration per agent.\nAuto-translate transcripts: Platform settings add optional auto_translate_transcript_to_app_language (boolean) to translate conversation transcripts to the viewer’s app language in history.\nNested agent transfers: Workflows add push, pop and replace operations for nested agent transfers, with enable_nesting and return_when_nested controls for returning to a parent workflow.\nBackchannel detection: Transcript user-turn models add optional ignored_as_backchannel (boolean) to mark utterances filtered as backchannels.\nAuxiliary conversation audio: Get conversation responses add required has_auxiliary_audio (boolean) alongside existing audio flags.\nMCP environment scoping: MCP server and tool routes add optional environment query parameter (defaults to production) on list tools, get tool, create tool config and update tool config endpoints.\nTool call sound override: Tool and MCP override schemas allow tool_call_sound: \"off\" to silence per-tool call sounds while inheriting server defaults when unset.\nTwilio SMS routing: Twilio phone-number import requests add optional enable_sms (boolean, default on) to control inbound SMS routing during number setup.\nUser sentiment sorting: List users adds optional sort_direction and supports sorting by average_sentiment_score.\nKnowledge base external sync: External sync schemas rename ExternalSyncType to ExternalSyncProvider, add sync job trigger and type enums with KbExternalSyncJob, and folder responses can include active_sync_job for in-flight or terminal sync status.\nTTS latency setting deprecation: optimize_streaming_latency on agent TTS settings is marked deprecated and documented as a no-op."
+      },
+      {
+        "title": "Workspaces",
+        "description": "Create service accounts: Added Create service account (POST /v1/service-accounts) with optional default_sharing_groups (DefaultSharingGroupConfig) for programmatic service-account provisioning.\nList workspace members: Added Get workspace members (GET /v1/workspace/members) returning WorkspaceMemberResponseModel entries with user id, email, seat status, owner and locked flags. Service accounts are excluded.\nInvite credit caps: Workspace invite payloads (single and bulk) add optional usage_limit for a monthly credit cap on invitees."
+      },
+      {
+        "title": "SDK Releases",
+        "description": "JavaScript SDK\n\nv2.57.0 - Regenerated from the latest OpenAPI schema with run_subagent system tool types, per-agent sentiment analysis settings, nested agent transfer workflow models, knowledge base external sync types, and MCP environment query parameters.\nv2.58.0 - Regenerated from the latest OpenAPI schema with service account creation, workspace member listing, invite usage_limit, conversation has_auxiliary_audio, and multi-context text-to-dialogue WebSocket message types.\n\nPython SDK\n\nv2.57.0 - Regenerated from the latest OpenAPI schema with run_subagent system tool models, per-agent sentiment analysis settings, nested agent transfer workflow models, knowledge base external sync types, and MCP environment query parameters.\nv2.58.0 - Regenerated from the latest OpenAPI schema with service account creation, workspace member listing, invite usage_limit, conversation has_auxiliary_audio, and multi-context text-to-dialogue WebSocket message types.\n\nPackages\n\n@elevenlabs/client@1.15.0 - Added onPing callback exposing ping events and estimated ping_ms for connection latency monitoring.\n@elevenlabs/react@1.10.0 - Exposed the onPing callback from @elevenlabs/client@1.15.0 in React hooks.\n@elevenlabs/types@0.17.1, @elevenlabs/convai-widget-core@0.14.10 and @elevenlabs/convai-widget-embed@0.14.10 - Dependency alignment to @elevenlabs/client@1.15.0."
+      },
+      {
+        "title": "API",
+        "description": "View API changesNew EndpointsWorkspaces\nCreate service account - POST /v1/service-accounts\nGet workspace members - GET /v1/workspace/members\nUpdated EndpointsElevenAgents\nGet conversation - GET /v1/convai/conversations/{conversation_id}\n\nAdded required has_auxiliary_audio (boolean) to response\n\n\nList users - GET /v1/convai/users\n\nAdded optional sort_direction query parameter\nAdded average_sentiment_score as a sort option\n\n\nGet tool - GET /v1/convai/tools/{tool_id}\n\nAdded optional environment query parameter\n\n\nList MCP server tools - GET /v1/convai/mcp-servers/{mcp_server_id}/tools\n\nAdded optional environment query parameter\n\n\nCreate MCP tool config - POST /v1/convai/mcp-servers/{mcp_server_id}/tool-configs\n\nAdded optional environment query parameter\n\n\nUpdate MCP tool config - PATCH /v1/convai/mcp-servers/{mcp_server_id}/tool-configs/{tool_name}\n\nAdded optional environment query parameter\n\n\nWorkspaces\nInvite user - POST /v1/workspace/invites/add\n\nAdded optional usage_limit for monthly invitee credit cap\n\n\nInvite multiple users - POST /v1/workspace/invites/add/bulk\n\nAdded optional usage_limit for monthly invitee credit cap\n\n\nSchema ChangesElevenAgents\nSystem tools\n\nAdded run_subagent (RunSubagentToolConfig) with required agents array\n\n\nPlatform settings\n\nAdded optional sentiment_analysis (SentimentAnalysisSettings)\nAdded optional auto_translate_transcript_to_app_language (boolean)\n\n\nWorkflows\n\nAdded nested AgentTransfer modeling with AgentTransferOp push, pop and replace\nAdded enable_nesting and return_when_nested workflow flags\n\n\nTranscripts\n\nAdded optional ignored_as_backchannel (boolean) on user-turn models\n\n\nTools and MCP\n\nAdded tool_call_sound: \"off\" override support on tool config models\nDeprecated optimize_streaming_latency on TTS agent settings (no-op)\n\n\nTelephony\n\nAdded optional enable_sms (boolean) on Twilio phone-number import requests\n\n\nKnowledge base\n\nRenamed ExternalSyncType to ExternalSyncProvider\nAdded KbExternalSyncJob, sync job trigger and type enums\nAdded optional active_sync_job on folder responses\n\n\nSentiment\n\nExpanded SentimentAggregate with recent-window counts and average scores\n\n\nWorkspaces\nService accounts\n\nAdded WorkspaceCreateServiceAccountResponseModel for create responses\nAdded optional default_sharing_groups on create requests\n\n\nMembers\n\nAdded WorkspaceMemberResponseModel for list responses\n\n\nInvites\n\nAdded optional usage_limit on single and bulk invite request bodies"
+      },
+      {
+        "title": "Workspaces",
+        "description": "Create service account - POST /v1/service-accounts\nGet workspace members - GET /v1/workspace/members\n\nUpdated Endpoints"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Get conversation - GET /v1/convai/conversations/{conversation_id}\n\nAdded required has_auxiliary_audio (boolean) to response\n\n\nList users - GET /v1/convai/users\n\nAdded optional sort_direction query parameter\nAdded average_sentiment_score as a sort option\n\n\nGet tool - GET /v1/convai/tools/{tool_id}\n\nAdded optional environment query parameter\n\n\nList MCP server tools - GET /v1/convai/mcp-servers/{mcp_server_id}/tools\n\nAdded optional environment query parameter\n\n\nCreate MCP tool config - POST /v1/convai/mcp-servers/{mcp_server_id}/tool-configs\n\nAdded optional environment query parameter\n\n\nUpdate MCP tool config - PATCH /v1/convai/mcp-servers/{mcp_server_id}/tool-configs/{tool_name}\n\nAdded optional environment query parameter"
+      },
+      {
+        "title": "Workspaces",
+        "description": "Invite user - POST /v1/workspace/invites/add\n\nAdded optional usage_limit for monthly invitee credit cap\n\n\nInvite multiple users - POST /v1/workspace/invites/add/bulk\n\nAdded optional usage_limit for monthly invitee credit cap\n\nSchema Changes"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "System tools\n\nAdded run_subagent (RunSubagentToolConfig) with required agents array\n\n\nPlatform settings\n\nAdded optional sentiment_analysis (SentimentAnalysisSettings)\nAdded optional auto_translate_transcript_to_app_language (boolean)\n\n\nWorkflows\n\nAdded nested AgentTransfer modeling with AgentTransferOp push, pop and replace\nAdded enable_nesting and return_when_nested workflow flags\n\n\nTranscripts\n\nAdded optional ignored_as_backchannel (boolean) on user-turn models\n\n\nTools and MCP\n\nAdded tool_call_sound: \"off\" override support on tool config models\nDeprecated optimize_streaming_latency on TTS agent settings (no-op)\n\n\nTelephony\n\nAdded optional enable_sms (boolean) on Twilio phone-number import requests\n\n\nKnowledge base\n\nRenamed ExternalSyncType to ExternalSyncProvider\nAdded KbExternalSyncJob, sync job trigger and type enums\nAdded optional active_sync_job on folder responses\n\n\nSentiment\n\nExpanded SentimentAggregate with recent-window counts and average scores"
+      },
+      {
+        "title": "Workspaces",
+        "description": "Service accounts\n\nAdded WorkspaceCreateServiceAccountResponseModel for create responses\nAdded optional default_sharing_groups on create requests\n\n\nMembers\n\nAdded WorkspaceMemberResponseModel for list responses\n\n\nInvites\n\nAdded optional usage_limit on single and bulk invite request bodies"
+      }
+    ],
+    "product_page_url": "https://elevenlabs.io/docs/changelog/2026/7/13",
+    "input": {
+      "url": "https://elevenlabs.io/docs/changelog"
+    }
+  },
+  {
+    "date": "June 29, 2026",
+    "entries": [
+      {
+        "title": "ElevenAgents",
+        "description": "Branch merge and rebase previews: Added Preview merged configuration (GET /v1/convai/agents/{agent_id}/branches/{source_branch_id}/merge-preview) and preview rebased configuration (GET /v1/convai/agents/{agent_id}/branches/{branch_id}/rebase-preview) to inspect merged or rebased agent configuration before committing. Both return MergePreviewResponseModel with the resulting config, overridden_fields, and source_identical_to_target.\nBranch usage metrics: List agent branches branch summary responses add optional calls_7d (integer) with seven-day call volume per branch.\nAuth connection status: Workspace auth connection response models replace OAuth-only OAuthConnectionStatus with shared AuthConnectionStatus (active, refresh_failed, revoked, credential_invalid). Bearer, Basic, mTLS, custom header, OAuth, OAuth2 JWT, Slack, URL secret and WhatsApp auth responses add optional status, status_detail and status_updated_at fields.\nTool response filtering: HTTP and agent tool configuration schemas add optional response_filter to trim tool responses before they reach the LLM, with response_filter_mode and response_filters on related override models.\nWorkflow phone transfers: Workflow phone-number transfer nodes add optional uui (UUITransferConfig) for RFC 7433 hex User-to-User Information on SIP REFER transfers.\nTelephony agent assignment: Twilio, Exotel and SIP trunk phone-number import request schemas add optional agent_id (string) to assign an agent during number setup.\nTurn transcription on disabled interruptions: Turn configuration schemas add optional transcribe_on_disabled_interruptions (boolean, default false) to control whether user speech is transcribed when interruptions are disabled.\nConversation sentiment: Conversation summary schemas add optional sentiment_analysis. Conversation user models add optional sentiment with frustrated-conversation references."
+      },
+      {
+        "title": "Speech to Text",
+        "description": "Combined multichannel output: Convert speech to text adds optional multichannel_output_style (separate default | combined) when use_multi_channel is enabled. Set combined to receive a single transcript with all channels merged and sorted by time instead of per-channel transcripts. Word-level responses include channel_index on each word when multichannel mode is active."
+      },
+      {
+        "title": "Text to Speech",
+        "description": "language_code behavior: TTS request schemas clarify that unsupported language_code values are ignored rather than rejected, and that language_code is not supported on multilingual_v2 models."
+      },
+      {
+        "title": "Workspaces",
+        "description": "Third-party API key disabling policy: Added Set workspace third-party disabling policy (POST /v1/workspaces/api-keys/third-party-disabling) for workspace-wide control over whether API key holders can self-disable keys via the third-party disable endpoint. Workspace API key create, patch and response models add optional third_party_disable_allowed (boolean).\nBearer auth connection updates: Update workspace auth connection request union adds UpdateBearerAuthRequest for bearer token credential updates.\nWorkspace permissions: Permission enums add conversation_privacy_manage and synthid_detector. Workspace group models add optional scim_group (string)."
+      },
+      {
+        "title": "SDK Releases",
+        "description": "JavaScript SDK\n\nv2.55.0 - Regenerated from the latest OpenAPI schema with branch merge and rebase preview clients, branch call-volume metrics, auth connection status fields, tool response filtering types, speech-to-text combined multichannel output, and workspace third-party API key disabling policy.\n\nPython SDK\n\nv2.55.0 - Regenerated from the latest OpenAPI schema with branch merge and rebase preview clients, branch call-volume metrics, auth connection status fields, tool response filtering models, speech-to-text combined multichannel output, and workspace third-party API key disabling policy.\n\nPackages\n\n@elevenlabs/client@1.13.0 - sendFeedback(like, eventId?) accepts an optional event_id to rate a specific past message. canSendFeedback now reflects connection state so feedback can be sent for any message while the session is live.\n@elevenlabs/client@1.14.0 - sendFeedback accepts null as the first argument to clear feedback on an event (score: null).\n@elevenlabs/react@1.8.0 and @elevenlabs/react@1.9.0 - Exposed the per-message and clear-feedback sendFeedback changes from @elevenlabs/client@1.13.0 and @elevenlabs/client@1.14.0 in React hooks.\n@elevenlabs/react-native@1.2.11 and @elevenlabs/react-native@1.2.12 - Dependency alignment to @elevenlabs/client@1.13.0–1.14.0 and @elevenlabs/react@1.8.0–1.9.0.\n@elevenlabs/types@0.16.0, @elevenlabs/convai-widget-core@0.14.6–0.14.8 and @elevenlabs/convai-widget-embed@0.14.6–0.14.8 - Dependency alignment to @elevenlabs/client@1.13.0–1.14.0.\n\nAndroid SDK\n\nv0.10.0 - Exposed reconciled message transcript as StateFlow. Deprecated text and agent callbacks in favor of event-id variants.\nv0.11.0 - Added audio frame callback for per-frame audio inspection during conversations.\n\niOS SDK\n\nv3.2.2 - Fixed LiveKit room delegate method implementation for correct room event handling."
+      },
+      {
+        "title": "API",
+        "description": "View API changesNew EndpointsElevenAgents\nGET /v1/convai/agents/{agent_id}/branches/{source_branch_id}/merge-preview - Preview merged configuration before merge\nGET /v1/convai/agents/{agent_id}/branches/{branch_id}/rebase-preview - Preview rebased configuration before rebase\nWorkspaces\nPOST /v1/workspaces/api-keys/third-party-disabling - Set workspace third-party API key disabling policy\nUpdated EndpointsElevenAgents\nList agent branches - GET /v1/convai/agents/{agent_id}/branches\n\nBranch summary responses add optional calls_7d (integer)\n\n\nPreview merged configuration - GET /v1/convai/agents/{agent_id}/branches/{source_branch_id}/merge-preview\n\nReturns MergePreviewResponseModel with merged config, overridden_fields and source_identical_to_target\n\n\nPreview rebased configuration - GET /v1/convai/agents/{agent_id}/branches/{branch_id}/rebase-preview\n\nReturns MergePreviewResponseModel with rebased config preview\n\n\nSpeech to Text\nConvert speech to text - POST /v1/speech-to-text\n\nAdded optional multichannel_output_style (separate | combined) when use_multi_channel is enabled\nWord-level responses include channel_index per word in multichannel mode\n\n\nWorkspaces\nSet workspace third-party disabling policy - POST /v1/workspaces/api-keys/third-party-disabling\n\nControls whether API key holders can self-disable keys via the third-party disable flow\n\n\nUpdate workspace auth connection - PATCH /v1/workspace/auth-connections/{auth_connection_id}\n\nRequest union adds UpdateBearerAuthRequest\n\n\nSchema ChangesElevenAgents\nAuth connections\n\nReplaced OAuthConnectionStatus with AuthConnectionStatus (active, refresh_failed, revoked, credential_invalid)\nAdded optional status, status_detail and status_updated_at on auth connection response models\n\n\nTools and workflows\n\nAdded optional response_filter on HTTP and agent tool configs\nAdded optional uui (UUITransferConfig) on transfer-related workflow models\n\n\nTurn configuration\n\nAdded optional transcribe_on_disabled_interruptions (boolean, default false)\n\n\nTelephony imports\n\nAdded optional agent_id on Twilio, Exotel and SIP trunk import request schemas\n\n\nConversation models\n\nAdded optional sentiment_analysis on conversation summary types\nAdded optional sentiment on conversation user models\n\n\nText to Speech\nClarified language_code is ignored when unsupported and not supported on multilingual_v2\nWorkspaces\nAPI keys\n\nAdded optional third_party_disable_allowed (boolean) on create, patch and response models\n\n\nPermissions\n\nAdded conversation_privacy_manage and synthid_detector\n\n\nGroups\n\nAdded optional scim_group (string) on workspace group models"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "GET /v1/convai/agents/{agent_id}/branches/{source_branch_id}/merge-preview - Preview merged configuration before merge\nGET /v1/convai/agents/{agent_id}/branches/{branch_id}/rebase-preview - Preview rebased configuration before rebase"
+      },
+      {
+        "title": "Workspaces",
+        "description": "POST /v1/workspaces/api-keys/third-party-disabling - Set workspace third-party API key disabling policy\n\nUpdated Endpoints"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "List agent branches - GET /v1/convai/agents/{agent_id}/branches\n\nBranch summary responses add optional calls_7d (integer)\n\n\nPreview merged configuration - GET /v1/convai/agents/{agent_id}/branches/{source_branch_id}/merge-preview\n\nReturns MergePreviewResponseModel with merged config, overridden_fields and source_identical_to_target\n\n\nPreview rebased configuration - GET /v1/convai/agents/{agent_id}/branches/{branch_id}/rebase-preview\n\nReturns MergePreviewResponseModel with rebased config preview"
+      },
+      {
+        "title": "Speech to Text",
+        "description": "Convert speech to text - POST /v1/speech-to-text\n\nAdded optional multichannel_output_style (separate | combined) when use_multi_channel is enabled\nWord-level responses include channel_index per word in multichannel mode"
+      },
+      {
+        "title": "Workspaces",
+        "description": "Set workspace third-party disabling policy - POST /v1/workspaces/api-keys/third-party-disabling\n\nControls whether API key holders can self-disable keys via the third-party disable flow\n\n\nUpdate workspace auth connection - PATCH /v1/workspace/auth-connections/{auth_connection_id}\n\nRequest union adds UpdateBearerAuthRequest\n\nSchema Changes"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Auth connections\n\nReplaced OAuthConnectionStatus with AuthConnectionStatus (active, refresh_failed, revoked, credential_invalid)\nAdded optional status, status_detail and status_updated_at on auth connection response models\n\n\nTools and workflows\n\nAdded optional response_filter on HTTP and agent tool configs\nAdded optional uui (UUITransferConfig) on transfer-related workflow models\n\n\nTurn configuration\n\nAdded optional transcribe_on_disabled_interruptions (boolean, default false)\n\n\nTelephony imports\n\nAdded optional agent_id on Twilio, Exotel and SIP trunk import request schemas\n\n\nConversation models\n\nAdded optional sentiment_analysis on conversation summary types\nAdded optional sentiment on conversation user models"
+      },
+      {
+        "title": "Text to Speech",
+        "description": "Clarified language_code is ignored when unsupported and not supported on multilingual_v2"
+      },
+      {
+        "title": "Workspaces",
+        "description": "API keys\n\nAdded optional third_party_disable_allowed (boolean) on create, patch and response models\n\n\nPermissions\n\nAdded conversation_privacy_manage and synthid_detector\n\n\nGroups\n\nAdded optional scim_group (string) on workspace group models"
+      }
+    ],
+    "product_page_url": "https://elevenlabs.io/docs/changelog/2026/6/29",
+    "input": {
+      "url": "https://elevenlabs.io/docs/changelog"
+    }
+  },
+  {
+    "date": "June 15, 2026",
+    "entries": [
+      {
+        "title": "Introducing Music v2",
+        "description": "Music v2 is now available via the ElevenLabs API. Set model_id to music_v2 on Generate music, Stream music, Generate music detailed and Upload music to use the new model. Music v2 introduces chunk-based composition plans built from GenerationChunk and AudioRefChunk segments, giving you finer control over structure, pacing and arrangement than the prompt-based music_v1 flow.\n\nUse music_v2 composition plans on generation and upload requests, or generate a plan first via the composition-plan endpoint. Request and response bodies accept either v1 or v2 plan shapes, so you can migrate endpoint by endpoint. MusicPrompt remains available for music_v1 only.\n\nQuickstartGenerate your first track with the Music API in minutes.Composition plansBuild chunk-based composition plans for structured, multi-section tracks.API referenceCompose, stream and upload music with music_v2 over the REST API.\n\nUpload timestamps: Upload music accepts optional with_timestamps; responses may include words_timestamps."
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Run conversation evaluation: Added Run conversation evaluation endpoint (POST /v1/convai/conversations/{conversation_id}/analysis/evaluations/run) to rerun a single evaluation criterion against a completed conversation using RunConversationEvaluationsRequest.\nWorkflow entry behavior: Workflow override-agent nodes add optional entry_behavior (generate_immediately, wait_for_user, auto) to control whether the sub-agent speaks first or waits for user input.\nEnd procedure system tool: Added end_procedure system tool configuration with matching error statuses. The start_procedure tool adds already_active to its error statuses.\nTransfer TTS overrides: AgentTransfer, workflow standalone agent nodes and successful transfer_to_agent tool results add optional preserve_client_tts_overrides (boolean) to keep client-side TTS overrides after a transfer.\nInteraction budget enum: InteractionBudget removes async and adds 5_minutes, 10_minutes and 1_hour. Update any configs or SDK enums that still reference async.\nCustom guardrail model selection: Custom guardrail configuration adds optional model with Gemini, Claude and GPT variants. Guardrail config also adds optional history_message_count (integer).\nPhone number list filters: List phone numbers adds optional provider, agent_id and branch_id query parameters to filter imported numbers.\nWhatsApp account filtering: List WhatsApp accounts adds optional agent_id query parameter to filter accounts by assigned agent.\nTopic time range filters: Get agent conversation topics adds optional from_unix_secs and to_unix_secs query parameters to bound topic discovery results.\nSIP codec configuration: Outbound SIP trunk request and response models add optional enabled_codecs (MediaCodec enum).\nMemory tool types: Added LoadableMemoryEntry and LoadMemoryEntryToolErrorStatus schemas for memory-tool error handling.\nAgent test batch limits: Agent test attach, run and resubmit request schemas raise maximum attached tests from 1000 to 5000.\nPhoneme tag support: Agent TTS settings add optional enable_phoneme_tags (boolean) for opt-in V3 SSML phoneme handling.\nArray schema omit overrides: Array JSON schema properties add optional is_omitted (mutually exclusive with other value sources). ConstantSchemaOverride can use array constant values.\nTransfer error context: Transfer-to-number error payloads can include optional agent_message (string)."
+      },
+      {
+        "title": "Workspaces",
+        "description": "Service account API key updates: Update service account API key no longer requires a request body. Edit fields support partial updates via no_update and nullable name, including permissions and character_limit.\nUsage timezone bucketing: Workspace usage-by-product-over-time requests add optional time_zone (IANA timezone string) with clarified interval_seconds bucket rules.\nHistory source filter: History list and detail source filters add Flows."
+      },
+      {
+        "title": "ElevenCreative Studio",
+        "description": "Project voice references: Project models, chapter TTS nodes, voice lists and voice statistics shift to project_voice_ref_id as the canonical voice field. Former voice_id fields remain on responses as deprecated, read-only mirrors for compatibility."
+      },
+      {
+        "title": "Speech to Text",
+        "description": "Speaker library diarization: Convert speech to text adds optional use_speaker_library (boolean, default false) for batch transcription diarization."
+      },
+      {
+        "title": "Voices",
+        "description": "Shared voice sorting: List shared voices sort query parameter gains an explicit enum, created_date default and updated description."
+      },
+      {
+        "title": "SDK Releases",
+        "description": "JavaScript SDK\n\nv2.53.0 - Regenerated from the latest OpenAPI schema with conversation evaluation rerun support, music v2 composition-plan unions, workflow entry_behavior, phone number and WhatsApp list filters, topic time-range parameters, alerting schema updates, studio project_voice_ref_id fields, and expanded agent test batch limits.\n\nPython SDK\n\nv2.53.0 - Regenerated from the latest OpenAPI schema with conversation evaluation rerun support, music v2 composition plans, workflow entry behavior and end-procedure tools, telephony filter parameters, alerting and service-account partial-update models, and studio voice reference fields.\n\nPackages\n\n@elevenlabs/client@1.11.0 - Added @elevenlabs/client/internal/unity sub-path export for the Unity SDK WebGL bridge, exposing MediaDeviceInput, MediaDeviceOutput, connection attach helpers and WebRTC adapter types.\n@elevenlabs/client@1.11.1, @elevenlabs/react@1.6.7, @elevenlabs/react-native@1.2.7, @elevenlabs/convai-widget-core@0.14.2 and @elevenlabs/convai-widget-embed@0.14.2 - Dependency alignment to @elevenlabs/client@1.11.1 and @elevenlabs/types@0.14.1.\n@elevenlabs/types@0.14.1 - Added \"license\": \"MIT\" to package.json for license-checker compatibility.\n\niOS SDK\n\nv3.2.1 - Added Singapore data residency support and enabled singlePeerConnection for WebRTC sessions."
+      },
+      {
+        "title": "API",
+        "description": "View API changesNew EndpointsElevenAgents\nRun conversation evaluation - POST /v1/convai/conversations/{conversation_id}/analysis/evaluations/run\n\nRequest body uses RunConversationEvaluationsRequest to rerun a single evaluation criterion\n\n\nUpdated EndpointsElevenAgents\nList phone numbers - GET /v1/convai/phone-numbers\n\nAdded optional provider, agent_id and branch_id query parameters\n\n\nGet agent conversation topics - GET /v1/convai/agents/{agent_id}/topics\n\nAdded optional from_unix_secs and to_unix_secs query parameters\n\n\nList WhatsApp accounts - GET /v1/convai/whatsapp-accounts\n\nAdded optional agent_id query parameter\n\n\nMusic\nGenerate music, Generate music detailed, Stream music and Upload music\n\nAdded music_v2 to supported model_id values\nUpload adds optional with_timestamps; responses may include words_timestamps\n\n\nSpeech to Text\nConvert speech to text - POST /v1/speech-to-text\n\nAdded optional use_speaker_library query parameter (boolean, default false)\n\n\nVoices\nList shared voices - GET /v1/shared-voices\n\nsort query parameter now uses an explicit enum with created_date default\n\n\nSchema ChangesElevenAgents\nWorkflow override-agent nodes\n\nAdded optional entry_behavior enum (generate_immediately, wait_for_user, auto)\n\n\nSystem tools\n\nAdded end_procedure tool config and error statuses\n\n\nTransfer and interaction schemas\n\nAdded optional preserve_client_tts_overrides on transfers and transfer tool results\nInteractionBudget removes async; adds 5_minutes, 10_minutes, 1_hour\n\n\nGuardrails and TTS\n\nCustom guardrails add optional model and history_message_count\nAgent TTS settings add optional enable_phoneme_tags\n\n\nTelephony\n\nSIP trunk models add optional enabled_codecs (MediaCodec enum)\n\n\nMemory and code tools\n\nAdded LoadableMemoryEntry and LoadMemoryEntryToolErrorStatus\n\n\nAgent testing\n\nRaised attached test limits from 1000 to 5000 on run and resubmit requests\n\n\nTool JSON schema properties\n\nArray properties add optional is_omitted\n\n\nWorkspaces\nService accounts\n\nAPI key PATCH supports partial updates with no_update sentinels\n\n\nUsage and history\n\nUsage-by-product-over-time adds optional time_zone\nHistory source filters add Flows\n\n\nMusic\nComposition plans\n\nAdded chunk-based CompositionPlan, GenerationChunk and AudioRefChunk for music_v2\nRequest and response bodies accept anyOf v1 or v2 plan shapes\n\n\nElevenCreative Studio\nProject voice models\n\nAdded project_voice_ref_id as canonical voice reference\nDeprecated read-only voice_id mirrors retained on responses"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Run conversation evaluation - POST /v1/convai/conversations/{conversation_id}/analysis/evaluations/run\n\nRequest body uses RunConversationEvaluationsRequest to rerun a single evaluation criterion\n\nUpdated Endpoints"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "List phone numbers - GET /v1/convai/phone-numbers\n\nAdded optional provider, agent_id and branch_id query parameters\n\n\nGet agent conversation topics - GET /v1/convai/agents/{agent_id}/topics\n\nAdded optional from_unix_secs and to_unix_secs query parameters\n\n\nList WhatsApp accounts - GET /v1/convai/whatsapp-accounts\n\nAdded optional agent_id query parameter"
+      },
+      {
+        "title": "Music",
+        "description": "Generate music, Generate music detailed, Stream music and Upload music\n\nAdded music_v2 to supported model_id values\nUpload adds optional with_timestamps; responses may include words_timestamps"
+      },
+      {
+        "title": "Speech to Text",
+        "description": "Convert speech to text - POST /v1/speech-to-text\n\nAdded optional use_speaker_library query parameter (boolean, default false)"
+      },
+      {
+        "title": "Voices",
+        "description": "List shared voices - GET /v1/shared-voices\n\nsort query parameter now uses an explicit enum with created_date default\n\nSchema Changes"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Workflow override-agent nodes\n\nAdded optional entry_behavior enum (generate_immediately, wait_for_user, auto)\n\n\nSystem tools\n\nAdded end_procedure tool config and error statuses\n\n\nTransfer and interaction schemas\n\nAdded optional preserve_client_tts_overrides on transfers and transfer tool results\nInteractionBudget removes async; adds 5_minutes, 10_minutes, 1_hour\n\n\nGuardrails and TTS\n\nCustom guardrails add optional model and history_message_count\nAgent TTS settings add optional enable_phoneme_tags\n\n\nTelephony\n\nSIP trunk models add optional enabled_codecs (MediaCodec enum)\n\n\nMemory and code tools\n\nAdded LoadableMemoryEntry and LoadMemoryEntryToolErrorStatus\n\n\nAgent testing\n\nRaised attached test limits from 1000 to 5000 on run and resubmit requests\n\n\nTool JSON schema properties\n\nArray properties add optional is_omitted"
+      },
+      {
+        "title": "Workspaces",
+        "description": "Service accounts\n\nAPI key PATCH supports partial updates with no_update sentinels\n\n\nUsage and history\n\nUsage-by-product-over-time adds optional time_zone\nHistory source filters add Flows"
+      },
+      {
+        "title": "Music",
+        "description": "Composition plans\n\nAdded chunk-based CompositionPlan, GenerationChunk and AudioRefChunk for music_v2\nRequest and response bodies accept anyOf v1 or v2 plan shapes"
+      },
+      {
+        "title": "ElevenCreative Studio",
+        "description": "Project voice models\n\nAdded project_voice_ref_id as canonical voice reference\nDeprecated read-only voice_id mirrors retained on responses"
+      }
+    ],
+    "product_page_url": "https://elevenlabs.io/docs/changelog/2026/6/15",
+    "input": {
+      "url": "https://elevenlabs.io/docs/changelog"
+    }
+  },
+  {
+    "date": "August 17, 2026",
+    "entries": [
+      {
+        "title": "ElevenCreative",
+        "description": "Image, video and speech generation APIs: New asynchronous Flows APIs create, list and retrieve video, image and speech generations. Generation responses expose pending, generating, completed and failed states, and requests can include a webhook target for completion events.\nReusable media assets: New asset APIs upload, list, retrieve and delete workspace media. Image, video and audio references can use an uploaded asset, a previous generation or inline base64 data, allowing generation jobs to be chained. See References and assets."
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Lightweight conversation summaries: Get conversation summary returns the generated title, transcript summary, call outcome and plain user or agent messages without loading the full transcript. The optional max_messages query parameter is an integer from 1 to 200 (default 40); longer conversations set messages_omitted to true. Useful for agents that need to preserve context.\nConversation topic pagination and sorting: Get agent conversation topics adds optional cursor pagination and sorting. Use page_size (integer, 1–100), cursor (string), sort_by (conversations, sentiment or success_rate) and sort_direction (asc or desc). Responses add has_more and nullable next_cursor.\nConcurrency wait queues: Agent platform settings add optional queueing (AgentQueueingConfig). Set enabled to true to hold callers when the agent reaches its concurrency limit; wait_timeout_seconds is an integer up to 1,800 (default 180).\nTurn and workflow controls: Turn configuration adds merge_with_default_ignore_terms (boolean, default false) to combine custom interruption terms with curated defaults. Soft timeouts add disable_until_first_user_message (boolean, default false), and workflow tool locators add optional schema_overrides for per-node parameter overrides.\nBackground audio defaults: BackgroundSoundConfig.volume now defaults to 0.15 instead of 0.6, and crossfade_loop now defaults to true instead of false. Set these fields explicitly to retain the previous behavior."
+      },
+      {
+        "title": "SDK Releases",
+        "description": "JavaScript SDK\n\nv2.64.0 - Added client.assets for uploading, listing, retrieving and deleting assets, plus client.flows for asynchronous video, image and speech generation. Turn configuration adds mergeWithDefaultIgnoreTerms. Removed CustomToolApiSchemaConfig and scimExternalId from WorkspaceGroupResponseModel.\n\nPython SDK\n\nv2.64.0 - Added assets and Flows clients for asynchronous video, image and speech generation, plus merge_with_default_ignore_terms in turn configuration. On-prem session setup adds extra_setup_config for passing additional setup-message fields.\n\nPackages\n\n@elevenlabs/client@1.18.0, @elevenlabs/react@1.12.1, @elevenlabs/types@0.20.0, @elevenlabs/react-native@1.2.19, @elevenlabs/convai-widget-core@0.16.0 and @elevenlabs/convai-widget-embed@0.16.0 - Added experimental self-hosted orchestrator sessions and rich-content events. Scribe audio worklets can now be self-hosted for strict content security policies. Disconnect handling now reaches disconnected consistently and prevents late callbacks from clearing a newer session. The widget renders quick replies and links inline, restores Markdown in voice transcripts and fixes language menu positioning inside container-query layouts.\n@elevenlabs/client@1.19.0, @elevenlabs/react@1.12.2, @elevenlabs/types@0.21.0, @elevenlabs/react-native@1.2.20 and @elevenlabs/convai-widget-core@0.16.1 - Added realtime Speech to Text options for secondary languages, entity detection and background audio filtering. Added final transcript, detected entity and invalid request events; aligned timestamp word types with the live schema; and fixed microphone permission failures preventing useScribe reconnection."
+      },
+      {
+        "title": "API",
+        "description": "View API changesNew EndpointsElevenCreative\nCreate video generation - POST /v1/flows/video\nList video generations - GET /v1/flows/video\nGet video generation - GET /v1/flows/video/{generation_id}\nCreate image generation - POST /v1/flows/image\nList image generations - GET /v1/flows/image\nGet image generation - GET /v1/flows/image/{generation_id}\nCreate speech generation - POST /v1/flows/text-to-speech\nList speech generations - GET /v1/flows/text-to-speech\nGet speech generation - GET /v1/flows/text-to-speech/{generation_id}\nUpload asset - POST /v1/assets\nList assets - GET /v1/assets\nGet asset - GET /v1/assets/{asset_id}\nDelete asset - DELETE /v1/assets/{asset_id}\nElevenAgents\nGet conversation summary - GET /v1/convai/conversations/{conversation_id}/summary\n\nAccepts optional max_messages (integer, 1–200, default 40)\nReturns GetConversationSummaryResponseModel with required conversation_id, agent_id, status, message_count and note\nPlain messages contain only role (user or agent) and message; conversations over the limit return messages_omitted: true\n\n\nUpdated EndpointsElevenAgents\nGet live count - GET /v1/convai/analytics/live-count\n\nAdded optional agent_ids (string array, maximum 25), which takes precedence over agent_id\n\n\nGet agent conversation topics - GET /v1/convai/agents/{agent_id}/topics\n\nAdded optional page_size (integer, 1–100), cursor (string), sort_by (conversations, sentiment or success_rate) and sort_direction (asc or desc)\nResponses add has_more (boolean, default false) and nullable next_cursor (string)\n\n\nSchema ChangesElevenAgents\nAdded optional queueing (AgentQueueingConfig) to agent platform settings. It contains enabled (boolean, default false) and wait_timeout_seconds (integer greater than 0 and at most 1,800, default 180)\nAdded optional schema_overrides to WorkflowToolLocator; per-node constant, dynamic variable, LLM or omit overrides take precedence over tool-level overrides\nAdded merge_with_default_ignore_terms (boolean, default false) to turn configuration and related override schemas\nAdded disable_until_first_user_message (boolean, default false) to soft-timeout configuration and related override schemas\nAdded required read-only status (success, error, blocked or skipped) to realtime agent tool response events\nAdded avaya to conversation initiation sources and avaya_api_key to authorization methods\nAdded gemini-3.6-flash and gemini-3.7-flash to supported agent LLM values\nChanged BackgroundSoundConfig.volume default from 0.6 to 0.15 and crossfade_loop default from false to true\nRemoved CustomToolApiSchemaConfig; generated SDK users importing this type must remove the import\nRemoved scim_external_id from WorkspaceGroupResponseModel"
+      },
+      {
+        "title": "ElevenCreative",
+        "description": "Create video generation - POST /v1/flows/video\nList video generations - GET /v1/flows/video\nGet video generation - GET /v1/flows/video/{generation_id}\nCreate image generation - POST /v1/flows/image\nList image generations - GET /v1/flows/image\nGet image generation - GET /v1/flows/image/{generation_id}\nCreate speech generation - POST /v1/flows/text-to-speech\nList speech generations - GET /v1/flows/text-to-speech\nGet speech generation - GET /v1/flows/text-to-speech/{generation_id}\nUpload asset - POST /v1/assets\nList assets - GET /v1/assets\nGet asset - GET /v1/assets/{asset_id}\nDelete asset - DELETE /v1/assets/{asset_id}"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Get conversation summary - GET /v1/convai/conversations/{conversation_id}/summary\n\nAccepts optional max_messages (integer, 1–200, default 40)\nReturns GetConversationSummaryResponseModel with required conversation_id, agent_id, status, message_count and note\nPlain messages contain only role (user or agent) and message; conversations over the limit return messages_omitted: true\n\nUpdated Endpoints"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Get live count - GET /v1/convai/analytics/live-count\n\nAdded optional agent_ids (string array, maximum 25), which takes precedence over agent_id\n\n\nGet agent conversation topics - GET /v1/convai/agents/{agent_id}/topics\n\nAdded optional page_size (integer, 1–100), cursor (string), sort_by (conversations, sentiment or success_rate) and sort_direction (asc or desc)\nResponses add has_more (boolean, default false) and nullable next_cursor (string)\n\nSchema Changes"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Added optional queueing (AgentQueueingConfig) to agent platform settings. It contains enabled (boolean, default false) and wait_timeout_seconds (integer greater than 0 and at most 1,800, default 180)\nAdded optional schema_overrides to WorkflowToolLocator; per-node constant, dynamic variable, LLM or omit overrides take precedence over tool-level overrides\nAdded merge_with_default_ignore_terms (boolean, default false) to turn configuration and related override schemas\nAdded disable_until_first_user_message (boolean, default false) to soft-timeout configuration and related override schemas\nAdded required read-only status (success, error, blocked or skipped) to realtime agent tool response events\nAdded avaya to conversation initiation sources and avaya_api_key to authorization methods\nAdded gemini-3.6-flash and gemini-3.7-flash to supported agent LLM values\nChanged BackgroundSoundConfig.volume default from 0.6 to 0.15 and crossfade_loop default from false to true\nRemoved CustomToolApiSchemaConfig; generated SDK users importing this type must remove the import\nRemoved scim_external_id from WorkspaceGroupResponseModel"
+      }
+    ],
+    "product_page_url": "https://elevenlabs.io/docs/changelog/2026/8/17",
+    "input": {
+      "url": "https://elevenlabs.io/docs/changelog"
+    }
+  },
+  {
+    "date": "July 20, 2026",
+    "entries": [
+      {
+        "title": "Music",
+        "description": "Music Finetunes API: Added API support for managing Music Finetunes. Five endpoints let you create a Finetune from uploaded audio, list accessible Finetunes, retrieve training status, update metadata and visibility, or delete a Finetune. All music generation SDK methods now expose finetune_id."
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Resolve external conversation references: Added GET /v1/convai/conversations/resolve to resolve a Slack message URL or Zendesk ticket URL to a conversation. Requests require agent_id and reference query parameters (strings).\nQuery agent knowledge bases: Added POST /v1/convai/agents/{agent_id}/knowledge-base/rag-query for read-only RAG queries against an agent’s knowledge base. The request requires query (string), accepts optional branch_id (string), and returns ranked chunks with document, chunk, text and vector-distance metadata. This endpoint is excluded from generated SDKs.\nKnowledge base content formats: Knowledge base file, text and URL responses add optional content_format (html | markdown, default html).\nAgent voice configuration: TTS override schemas add optional client-overridable model_id (TTSConversationalModel). The default for enable_phoneme_tags changes from false to true.\nFaster backup LLM cascade: The default cascade_timeout_seconds changes from 8 to 4 seconds. The allowed range remains 2–15 seconds.\nTool parameter value sources: Object tool parameters can now use dynamic_variable, constant_value or is_omitted, matching existing scalar and array controls. Constant schema overrides now accept arbitrary arrays and objects.\nFull-response guardrails: Custom guardrails add optional evaluate_full_response_only (boolean, default false) to evaluate the complete non-TTS response once. This option requires blocking mode.\nTwilio call recording: Telephony call configuration adds optional twilio_call_recording_enabled (boolean, default false). Recordings are stored in the connected Twilio account and the setting is ignored by other providers.\nWidget file-upload text: Widget text configuration adds optional labels and error messages for attaching and removing files, upload failures, unsupported types, oversized files, file-count limits and the typing indicator.\nKnowledge base sync status: Knowledge base file responses add optional auto_sync_info and refresh_status (FileRefreshStatus). Folder responses add required document_count (integer), a recursive count of non-folder documents capped at 1000.\nConversation text search filters: Text search conversation messages adds optional exclude_statuses and termination_reasons array query parameters.\nLLM options: Agent LLM configuration adds gpt-5.6-sol, gpt-5.6-terra and gpt-5.6-luna. LLMReasoningEffort adds max.\nWhatsApp typing indicators: WhatsApp account request and response schemas add optional enable_typing_indicator (boolean)."
+      },
+      {
+        "title": "Speech to Text",
+        "description": "Single-use batch authentication: Convert speech to text adds optional token (string) as an alternative to API key or bearer authentication. Create the single-use token with POST /v1/single-use-token/batch_scribe; it expires after 15 minutes.\nRealtime client reliability: @elevenlabs/client now reports microphone setup and malformed server errors through RealtimeEvents.ERROR, releases microphone resources after setup failures and connection closure, and drops late microphone frames after socket teardown."
+      },
+      {
+        "title": "Text to Speech",
+        "description": "Archived pronunciation dictionaries: List pronunciation dictionaries adds optional include_archived (boolean, default true)."
+      },
+      {
+        "title": "Workspaces",
+        "description": "Webhook event subscriptions: Update workspace webhook requests add optional events (WorkspaceWebhookEventType[]) with voice_library_removal_notice, speech_to_text and agent_qa. Webhook responses can return the subscribed event list.\nUsage analytics dimensions: Get workspace usage adds surface and actor to the group_by values.\nClear service account limits: Update service account API key accepts character_limit: \"clear\" to remove a monthly character limit, alongside \"no_update\" and integer values.\nAlerting webhook references: Alerting webhook notifier schemas now identify a workspace webhook with required webhook_id (string) instead of embedding url, method and headers."
+      },
+      {
+        "title": "SDK Releases",
+        "description": "JavaScript SDK\n\nv2.59.0 - Added music.finetunes methods to list, create, get, update and delete Music Finetunes. Also added conversation reference resolution, archived pronunciation dictionary filtering and single-use Speech to Text tokens.\n\nPython SDK\n\nv2.59.0 - Added Music Finetunes and conversation reference resolution from the latest API schema. OnPremInitiationData also adds typed post_call_transcription_webhook and post_call_audio_webhook configurations with optional hmac_secret for signed post-call webhooks.\n\nPackages\n\n@elevenlabs/client@1.15.1 - Improved Scribe Realtime error delivery and microphone cleanup during setup failures, client or server closure, and late audio frames.\n@elevenlabs/react@1.10.1, @elevenlabs/react-native@1.2.15, @elevenlabs/convai-widget-core@0.14.11 and @elevenlabs/convai-widget-embed@0.14.11 - Updated dependencies to include the @elevenlabs/client@1.15.1 Scribe Realtime fixes.\n\nAndroid SDK\n\nv0.11.1 - Prevented R8 and ProGuard from obfuscating outgoing WebSocket and WebRTC event fields such as text and type.\n\nCLI\n\n@elevenlabs/cli@0.5.6 - Updated default agent templates to use scribe_realtime instead of the removed elevenlabs ASR provider. Minimal templates continue to use the server default."
+      },
+      {
+        "title": "API",
+        "description": "View API changesNew EndpointsMusic\nList Music Finetunes - GET /v1/music/finetunes\n\nSupports cursor pagination, visibility and creator filters, and sorting by creation time or name\n\n\nCreate Music Finetune - POST /v1/music/finetunes\n\nRequires name and primary_genre\nAccepts up to 50 audio files, tags, visibility and model_id\n\n\nGet Music Finetune - GET /v1/music/finetunes/{finetune_id}\nUpdate Music Finetune - PATCH /v1/music/finetunes/{finetune_id}\n\nUpdates name, tags, primary_genre or visibility\n\n\nDelete Music Finetune - DELETE /v1/music/finetunes/{finetune_id}\nElevenAgents\nGET /v1/convai/conversations/resolve\n\nRequires agent_id (string) and reference (string) query parameters\nReturns GetConversationResponseModel\n\n\nPOST /v1/convai/agents/{agent_id}/knowledge-base/rag-query\n\nRequires query (string) in the request body\nAccepts optional branch_id (string) query parameter\nReturns AgentKnowledgeBaseRagQueryResponseModel\nExcluded from generated SDKs\n\n\nUpdated EndpointsElevenAgents\nText search conversation messages - GET /v1/convai/conversations/messages/text-search\n\nAdded optional exclude_statuses and termination_reasons array query parameters\n\n\nSpeech to Text\nConvert speech to text - POST /v1/speech-to-text\n\nAdded optional token (string) query parameter for a single-use batch Scribe token\n\n\nText to Speech\nList pronunciation dictionaries - GET /v1/pronunciation-dictionaries\n\nAdded optional include_archived (boolean, default true) query parameter\n\n\nWorkspaces\nUpdate workspace webhook - PATCH /v1/workspace/webhooks/{webhook_id}\n\nAdded optional events (WorkspaceWebhookEventType[]) request field\n\n\nGet workspace usage - POST /v1/workspace/analytics/query/usage-by-product-over-time\n\nAdded surface and actor to the optional group_by array\n\n\nUpdate service account API key - PATCH /v1/service-accounts/{service_account_user_id}/api-keys/{api_key_id}\n\nAdded \"clear\" to the optional character_limit field\n\n\nSchema ChangesElevenAgents\nElevenAgents knowledge base response schemas add optional content_format (html | markdown, default html)\nKnowledge base file responses add optional auto_sync_info and refresh_status (FileRefreshStatus)\nKnowledge base folder responses add required document_count (integer)\nAgent TTS override schemas add optional model_id (TTSConversationalModel)\nAgent TTS enable_phoneme_tags now defaults to true instead of false\nBackup LLM cascade_timeout_seconds now defaults to 4 instead of 8 seconds\nAgent LLM configuration adds gpt-5.6-sol, gpt-5.6-terra and gpt-5.6-luna; LLMReasoningEffort adds max\nCustom guardrails add optional evaluate_full_response_only (boolean, default false)\nTelephony call configuration adds optional twilio_call_recording_enabled (boolean, default false)\nObject tool parameters add dynamic_variable, constant_value and is_omitted; constant overrides accept arbitrary array and object values\nWidget text configuration adds optional file-upload and typing-indicator labels\nWhatsApp account schemas add optional enable_typing_indicator (boolean)\nSimulation and testing schemas add AutoGenerationMetadata and SimulationLibrarySettings\nMusic\nAdded Music Finetune request, response, pagination, visibility, creator, status and failure-reason schemas\nAll Music generation request schemas expose finetune_id to generated SDKs\nWorkspaces\nWorkspace webhook request and response schemas add optional events (WorkspaceWebhookEventType[])\nAlerting webhook notifier schemas use required webhook_id (string) instead of url, method and headers"
+      },
+      {
+        "title": "Music",
+        "description": "List Music Finetunes - GET /v1/music/finetunes\n\nSupports cursor pagination, visibility and creator filters, and sorting by creation time or name\n\n\nCreate Music Finetune - POST /v1/music/finetunes\n\nRequires name and primary_genre\nAccepts up to 50 audio files, tags, visibility and model_id\n\n\nGet Music Finetune - GET /v1/music/finetunes/{finetune_id}\nUpdate Music Finetune - PATCH /v1/music/finetunes/{finetune_id}\n\nUpdates name, tags, primary_genre or visibility\n\n\nDelete Music Finetune - DELETE /v1/music/finetunes/{finetune_id}"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "GET /v1/convai/conversations/resolve\n\nRequires agent_id (string) and reference (string) query parameters\nReturns GetConversationResponseModel\n\n\nPOST /v1/convai/agents/{agent_id}/knowledge-base/rag-query\n\nRequires query (string) in the request body\nAccepts optional branch_id (string) query parameter\nReturns AgentKnowledgeBaseRagQueryResponseModel\nExcluded from generated SDKs\n\nUpdated Endpoints"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "Text search conversation messages - GET /v1/convai/conversations/messages/text-search\n\nAdded optional exclude_statuses and termination_reasons array query parameters"
+      },
+      {
+        "title": "Speech to Text",
+        "description": "Convert speech to text - POST /v1/speech-to-text\n\nAdded optional token (string) query parameter for a single-use batch Scribe token"
+      },
+      {
+        "title": "Text to Speech",
+        "description": "List pronunciation dictionaries - GET /v1/pronunciation-dictionaries\n\nAdded optional include_archived (boolean, default true) query parameter"
+      },
+      {
+        "title": "Workspaces",
+        "description": "Update workspace webhook - PATCH /v1/workspace/webhooks/{webhook_id}\n\nAdded optional events (WorkspaceWebhookEventType[]) request field\n\n\nGet workspace usage - POST /v1/workspace/analytics/query/usage-by-product-over-time\n\nAdded surface and actor to the optional group_by array\n\n\nUpdate service account API key - PATCH /v1/service-accounts/{service_account_user_id}/api-keys/{api_key_id}\n\nAdded \"clear\" to the optional character_limit field\n\nSchema Changes"
+      },
+      {
+        "title": "ElevenAgents",
+        "description": "ElevenAgents knowledge base response schemas add optional content_format (html | markdown, default html)\nKnowledge base file responses add optional auto_sync_info and refresh_status (FileRefreshStatus)\nKnowledge base folder responses add required document_count (integer)\nAgent TTS override schemas add optional model_id (TTSConversationalModel)\nAgent TTS enable_phoneme_tags now defaults to true instead of false\nBackup LLM cascade_timeout_seconds now defaults to 4 instead of 8 seconds\nAgent LLM configuration adds gpt-5.6-sol, gpt-5.6-terra and gpt-5.6-luna; LLMReasoningEffort adds max\nCustom guardrails add optional evaluate_full_response_only (boolean, default false)\nTelephony call configuration adds optional twilio_call_recording_enabled (boolean, default false)\nObject tool parameters add dynamic_variable, constant_value and is_omitted; constant overrides accept arbitrary array and object values\nWidget text configuration adds optional file-upload and typing-indicator labels\nWhatsApp account schemas add optional enable_typing_indicator (boolean)\nSimulation and testing schemas add AutoGenerationMetadata and SimulationLibrarySettings"
+      },
+      {
+        "title": "Music",
+        "description": "Added Music Finetune request, response, pagination, visibility, creator, status and failure-reason schemas\nAll Music generation request schemas expose finetune_id to generated SDKs"
+      },
+      {
+        "title": "Workspaces",
+        "description": "Workspace webhook request and response schemas add optional events (WorkspaceWebhookEventType[])\nAlerting webhook notifier schemas use required webhook_id (string) instead of url, method and headers"
+      }
+    ],
+    "product_page_url": "https://elevenlabs.io/docs/changelog/2026/7/20",
+    "input": {
+      "url": "https://elevenlabs.io/docs/changelog"
+    }
+  }
+]

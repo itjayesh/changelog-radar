@@ -1,0 +1,26 @@
+[
+  {
+    "target": "deepgram",
+    "collectorId": "c_msz0byeniqr2tdb79",
+    "description": "The scraper times out waiting for more .fern-changelog-card-link entries to lazy-load inside .fern-changelog-timeline before extracting. Don't wait for infinite-scroll / load-more to finish — just extract the changelog entries already rendered on initial page load.",
+    "step": "approve",
+    "ok": true,
+    "timestamp": "2026-08-18T19:17:02.313Z"
+  },
+  {
+    "target": "deepgram",
+    "collectorId": "c_msz0byeniqr2tdb79",
+    "description": "The previous fix worked in preview but the full scraper run still times out with the same error: waiting for .fern-changelog-card-link to lazy-load in .fern-changelog-timeline. The scraper must not scroll, click load-more, or paginate at all — extract only the changelog entries present in the initial page HTML on load, nothing beyond that, even if it's just the first page of entries.",
+    "step": "approve",
+    "ok": true,
+    "timestamp": "2026-08-18T19:34:10.110Z"
+  },
+  {
+    "target": "deepgram",
+    "collectorId": "c_msz0byeniqr2tdb79",
+    "description": "The scraper must not scroll, click load-more, or wait for lazy-loaded .fern-changelog-card-link entries in .fern-changelog-timeline to appear beyond what's already rendered on initial page load. Extract only what's present on load, even if that's just the first page of entries.",
+    "step": "approve",
+    "ok": true,
+    "timestamp": "2026-08-18T19:39:32.770Z"
+  }
+]

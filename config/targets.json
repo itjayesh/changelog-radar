@@ -1,0 +1,22 @@
+{
+  "targets": [
+    {
+      "name": "deepgram",
+      "url": "https://developers.deepgram.com/changelog",
+      "description": "Extract each changelog entry: date, title, category tags, and description text",
+      "collectorId": "c_msz0byeniqr2tdb79"
+    },
+    {
+      "name": "elevenlabs",
+      "url": "https://elevenlabs.io/docs/changelog",
+      "description": "Extract each changelog entry: date, title, and description text",
+      "collectorId": "c_msz0jtju1zg2a2rf9v"
+    },
+    {
+      "name": "cartesia",
+      "url": "https://docs.cartesia.ai/changelog/2026",
+      "description": "Extract each changelog entry: date, title, and description text",
+      "collectorId": "c_msz13klb288chp5xge"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+name: Changelog Radar
+
+on:
+  schedule:
+    - cron: "0 9 * * 1" # every Monday 09:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Authenticate Bright Data CLI
+        run: npx -p @brightdata/cli bdata login --api-key "${{ secrets.BRIGHTDATA_API_KEY }}"
+
+      - name: Run scrapers
+        id: run
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: node scripts/run-pipeline.mjs
+        continue-on-error: true
+
+      - name: Self-heal any broken target and re-run
+        if: steps.run.outcome == 'failure'
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          set -e
+          for name in $(node -e "console.log(require('./config/targets.json').targets.map(t=>t.name).join(' '))"); do
+            node scripts/heal-and-rerun.mjs "$name" "extraction returned no results in the last run, the page structure likely changed" || true
+          done
+          node scripts/run-pipeline.mjs
+
+      - name: Commit new snapshots
+        run: |
+          git config user.name "changelog-radar-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/ config/targets.json
+          git diff --cached --quiet || git commit -m "chore: weekly changelog snapshot"
+          git push

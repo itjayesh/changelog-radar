@@ -1,0 +1,11 @@
+{
+  "name": "changelog-radar",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "create": "node scripts/create-scrapers.mjs",
+    "run": "node scripts/run-pipeline.mjs",
+    "heal": "node scripts/heal-and-rerun.mjs"
+  }
+}

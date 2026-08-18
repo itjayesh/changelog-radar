@@ -27,6 +27,22 @@ function flattenEntries(pages) {
   return out;
 }
 
+// Bright Data's extraction is AI-driven, so an unchanged entry can come back
+// with its JSON keys in a different order across runs. Sort keys before
+// comparing so diffing checks content, not serialization order — otherwise
+// unchanged entries get misclassified as "added" and spam the Discord digest.
+function stableKey(entry) {
+  if (Array.isArray(entry)) return JSON.stringify(entry.map(stableKeyValue));
+  return JSON.stringify(stableKeyValue(entry));
+}
+function stableKeyValue(value) {
+  if (Array.isArray(value)) return value.map(stableKeyValue);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.keys(value).sort().map((k) => [k, stableKeyValue(value[k])]));
+  }
+  return value;
+}
+
 let anyFailed = false;
 const digest = [];
 
@@ -34,6 +50,7 @@ for (const target of config.targets) {
   if (onlyName && target.name !== onlyName) continue;
   if (!target.collectorId) {
     console.error(`[skip] ${target.name}: no collectorId yet, run \`npm run create\` first`);
+    anyFailed = true; // a config mistake, not a site break — surface it, but don't emit BROKEN_TARGET since healing can't fix a missing collector
     continue;
   }
 
@@ -67,8 +84,8 @@ for (const target of config.targets) {
   const latestPath = new URL("latest.json", dir);
   const previous = existsSync(latestPath) ? JSON.parse(readFileSync(latestPath, "utf8")) : [];
 
-  const previousKeys = new Set(previous.map((e) => JSON.stringify(e)));
-  const added = entries.filter((e) => !previousKeys.has(JSON.stringify(e)));
+  const previousKeys = new Set(previous.map(stableKey));
+  const added = entries.filter((e) => !previousKeys.has(stableKey(e)));
 
   writeFileSync(latestPath, JSON.stringify(entries, null, 2) + "\n");
   writeFileSync(new URL(`${new Date().toISOString().slice(0, 10)}.json`, dir), JSON.stringify(entries, null, 2) + "\n");

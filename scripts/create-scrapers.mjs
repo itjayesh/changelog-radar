@@ -26,7 +26,11 @@ for (const target of config.targets) {
 
   target.collectorId = collectorId;
   console.log(`[ok] ${target.name} -> ${collectorId}`);
+
+  // Save after every target, not just at the end — a crash or throw on a later
+  // target (e.g. a transient spawn error) must not lose Collector IDs already
+  // obtained from Bright Data, or a re-run would create duplicate scrapers.
+  writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2) + "\n");
 }
 
-writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2) + "\n");
 console.log("\nSaved collector IDs to config/targets.json. Pin them in CLAUDE.md too.");

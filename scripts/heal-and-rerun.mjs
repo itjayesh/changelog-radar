@@ -1,6 +1,9 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { bdata } from "./lib/bdata.mjs";
 import { spawnSync } from "node:child_process";
+
+const RUN_PIPELINE_PATH = fileURLToPath(new URL("./run-pipeline.mjs", import.meta.url));
 
 const LOG_PATH = new URL("../data/heal-log.json", import.meta.url);
 
@@ -47,5 +50,16 @@ if (approveResult.status !== 0) {
 logHealEvent({ target: name, collectorId: target.collectorId, description, step: "approve", ok: true });
 
 console.log(`[rerun] ${name}`);
-const rerun = spawnSync(process.execPath, ["scripts/run-pipeline.mjs", name], { stdio: "inherit" });
-process.exit(rerun.status ?? 0);
+const rerun = spawnSync(process.execPath, [RUN_PIPELINE_PATH, name], { stdio: "inherit" });
+
+if (rerun.error) {
+  console.error(`[rerun-fail] ${rerun.error.message}`);
+  logHealEvent({ target: name, collectorId: target.collectorId, description, step: "verify", ok: false, detail: rerun.error.message });
+  process.exit(1);
+}
+
+// The heal + approve succeeding doesn't mean the fix actually worked — only the
+// rerun proves that, so log the real outcome instead of assuming success at approve time.
+const verified = rerun.status === 0;
+logHealEvent({ target: name, collectorId: target.collectorId, description, step: "verify", ok: verified });
+process.exit(verified ? 0 : rerun.status ?? 1);

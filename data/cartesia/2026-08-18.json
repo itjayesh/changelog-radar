@@ -1,185 +1,5 @@
 [
   {
-    "date": "December 2024",
-    "title": "API",
-    "description": "Pricing updates; character usage columns migrated to bigint; presign URLs for Pro Voice Clone; voices/<id>/conditioning endpoint; file to dataset in presign; userID-level endpoint restrictions; Stripe Customer ID on checkout. EU deployment and Hindi HC fixes."
-  },
-  {
-    "date": "December 2024",
-    "title": "Playground",
-    "description": "New model on Playground highlighting transcript following improvements (demo, not GA). Blog and play.cartesia.ai live."
-  },
-  {
-    "date": "December 2024",
-    "title": "Models / Voices",
-    "description": "Model aliasing updated for sonic and sonic-preview ; twilight-morning in API and enterprise; conditioning entries for voice clone and multilingual. Embedding search for LoRA voice selection."
-  },
-  {
-    "date": "December 2024",
-    "title": "Other",
-    "description": "Infrastructure and scaling updates. State of Voice blog and map."
-  },
-  {
-    "date": "November 2024",
-    "title": "API",
-    "description": "Cartesia-Version 2024-11-13 — Upgrade to new API version; unified clone voice endpoint ; datasets support; files endpoint pagination; FineTuneRequest status; fine-tunes API in Playground; presign URLs for Pro Voice Clone; Flush Done event for manual WebSocket flushing; <pause> tag for continuations. GCP Enterprise."
-  },
-  {
-    "date": "November 2024",
-    "title": "Playground",
-    "description": "Changes for new API; replay suite; GCP Enterprise."
-  },
-  {
-    "date": "November 2024",
-    "title": "Models / Voices",
-    "description": "Flush Done event for manual flushing in WebSocket; <pause> tag for continuations within a single transcript; spelling fixes; manual flush and flush ID. Empty encoding field allowed for mp3."
-  },
-  {
-    "date": "November 2024",
-    "title": "Docs",
-    "description": "API version 2024-11-13 : Sonic 2, capability guides (clone, pronunciations, speed/emotion, continuations, localize), formatting for Sonic 2. Integrations: LiveKit, Pipecat, Rasa, Thoughtly, Twilio, MCP. Enterprise: SSO, organizations. See API Conventions ."
-  },
-  {
-    "date": "October 2024",
-    "title": "API",
-    "description": "Cartesia JS bytes endpoint; gen blocks removed from character counting; health checks and middleware; user-level queueing with queue length cap and timeout; 10× queue size rejection; Slang (continuations) and ConditioningData; voice changer JS SDK. Remove max limit from Playground."
-  },
-  {
-    "date": "October 2024",
-    "title": "Playground",
-    "description": "GCP: API and ingress for GCP US Central. Queueing: user-level queueing in API gateway; queue length cap and queuedRequest timeout. Voice Changer: Playground UI polish; ConditioningData as part of ResolvedVoice; Slang rollout; flush on start/end of spell tags. LoRA release UI; onboarding data upsert fix; welcome page submit loading state; enterprise contact links."
-  },
-  {
-    "date": "October 2024",
-    "title": "Other",
-    "description": "Canonical linking and sitemap. Blog and navigation (Blog, Careers) updates."
-  },
-  {
-    "date": "September 2024",
-    "title": "API",
-    "description": "User-level queueing; queue size and websocket queueing rejection; api_status field for voice API usability; LoRA pricing and UX cleanup; flush all audio on DONE token (including CB); user option to obfuscate transcripts in logs. LoRA and load balancer improvements."
-  },
-  {
-    "date": "September 2024",
-    "title": "Playground",
-    "description": "Function calling ; agent creation, tests, and dev setup; voice agent infrastructure enabled. LoRA: HiFi cloning endpoint and Playground page; 8 new voices on Playground; Indian accent. Voice Changer Playground UI; JS SDK for voice changer. Language added to TTS request from voices/[id] ; flush all audio on DONE token; user option to obfuscate transcripts in logs."
-  },
-  {
-    "date": "September 2024",
-    "title": "Docs",
-    "description": "Blog and sitemap updates."
-  },
-  {
-    "date": "August 2024",
-    "title": "API",
-    "description": "Reject invalid transcripts (docs and API gateway); no_more_inputs in WebSockets can use voice_embedding instead of voice_id . Improved bad model id handling."
-  },
-  {
-    "date": "August 2024",
-    "title": "Playground",
-    "description": "Localization page in Playground and JS client; dialects and future-compatibility. Switch Playground to voice ID; allow both id and embedding for TTSRequest ; archive voices (kept accessible via API). Replay button; feedback form; fix multilingual recommended voices when switching back to English; better error messaging."
-  },
-  {
-    "date": "August 2024",
-    "title": "Models / Voices",
-    "description": "LoRA support (multiple voices per LoRA, new cache key, easy-brook-lora, vc-flowing-dream)."
-  },
-  {
-    "date": "August 2024",
-    "title": "Other",
-    "description": "On-device homepage launch; proper links for “Request a demo” button. LoRA : multiple voices per LoRA."
-  },
-  {
-    "date": "July 2024",
-    "title": "API",
-    "description": "Voice Conversion endpoint — New API endpoint. Timestamps on WebSocket endpoint; per-generation voice controls (speed, emotion) in API; polar-tree deployed ( sonic-multilingual ); continuous batching support; VocalWave (English) and long-generation support; sonic-english → vocal-wave, sonic-multilingual → ancient-voice aliasing. buffer and mp3 params on /bytes ; MP3 streaming and WAV encoding fixes; request cancellation; empty transcript allowed when continue=false ; Stripe webhook cache clear; subscription cancellation/reactivation; Redis cache for overage; keys endpoints. Clerk-based auth in API."
-  },
-  {
-    "date": "July 2024",
-    "title": "Playground",
-    "description": "Optional enhance flag for voice cloning in JS client, Python client, and Playground; voice update endpoint and docs; gate voice cloning for free users. Prevent playing audio while playback in progress; download button disabled until generation finished; API key deletion clearer with copy button; character usage indicator; subscription and checkout fixes; gating clone form for free users."
-  },
-  {
-    "date": "July 2024",
-    "title": "Docs",
-    "description": "Voice cloning docs; timestamps and continuations; user guides for voice control and Twilio; emotion control and timestamps; “phonemes” terminology. Voice cloning from file."
-  },
-  {
-    "date": "July 2024",
-    "title": "Other",
-    "description": "Python client: continuations support, custom base_url , fallback for websockets; JS client v1.0.1: onError prop on useTTS. Voice controls (speed, emotion) in Python client and docs."
-  },
-  {
-    "date": "June 2024",
-    "title": "API",
-    "description": "Continuations — Support for streaming input via SSE and Bytes; NoMoreInputs signal. Cartesia Version enforced via header; Playground and checkout/subscription endpoints send it. 48 kHz added to valid sample rates; .wav byte streaming; HTTP streaming endpoint for raw bytes; API standardization (backwards-compatible); new voices endpoints; mulaw and alaw backwards compatibility; Python client v1.0.0 (overhaul, output_format ); JS client: pcm_s16le , pcm_alaw , pcm_mulaw and improved typing; caching for voices; context_id in WebSocket response and docs. Stripe webhooks for renewals and expiration; OpenAPI spec update."
-  },
-  {
-    "date": "June 2024",
-    "title": "Playground",
-    "description": "Multilingual: language parameter on voices API and in API; Playground language selection; multilingual copy on homepage; default sonic-english → feasible-haze. Mobile layout improvements; multilingual UI papercuts; voice cloning and empty transcript styling fixes; filtering moved from voices/[id] to Speak page."
-  },
-  {
-    "date": "June 2024",
-    "title": "Models / Voices",
-    "description": "sonic-multilingual and sonic-english aliasing; language column on voices. Recommended voices."
-  },
-  {
-    "date": "June 2024",
-    "title": "Docs",
-    "description": "Version 2024-06-10 : get-started, API conventions, integrations (LiveKit, Pipecat, Rasa, Thoughtly, Twilio, MCP), clone voices, embeddings/voice mixing. See API Conventions ."
-  },
-  {
-    "date": "June 2024",
-    "title": "Other",
-    "description": "ToS changes; revised pricing tiers; legal notices on sign-in and sign-up; overage toggle in Playground. Character usage limit blocks WebSocket when exceeded."
-  },
-  {
-    "date": "May 2024",
-    "title": "API",
-    "description": "Cartesia Version header; HTTP streaming for raw bytes; new voices endpoints; mulaw/alaw backwards compatibility; API standardization (backwards-compatible); Python client v1.0.0; JS client structure overhaul. Clone voice upload fix."
-  },
-  {
-    "date": "May 2024",
-    "title": "Playground",
-    "description": "Redesign and Sonic launch copy; subscriptions page; favoriting voices; emotion and speed sliders ; User vs Default voices; tags (Age, Accent) in DB and Playground; sample_text field (API Gateway and Playground); buffer streamed audio before playback; character usage indicator; API key auto-created on user creation; custom sign-in/sign-up and 404 on sign-out fix; disable generation button while audio playing; human-readable model names and skilled-cherry. Character limit increase."
-  },
-  {
-    "date": "May 2024",
-    "title": "Models / Voices",
-    "description": "Human-readable model names; skilled-cherry; polar-tree ( sonic-multilingual ); continuations and output format; Python client numpy array support. Voice cloning disclaimer."
-  },
-  {
-    "date": "May 2024",
-    "title": "Docs",
-    "description": "Mintlify docs added."
-  },
-  {
-    "date": "May 2024",
-    "title": "Other",
-    "description": "Stripe webhooks for subscriptions; subscription cancellation and reactivation; character usage checks on generation routes; free subscription by default; Scale plan limit (8M chars/month); checkout and receipts. Custom sign-in/sign-up pages."
-  },
-  {
-    "date": "April 2024",
-    "title": "API",
-    "description": "model_id added as parameter to generate; minimum transcript length enforced; voice moved to AudioGenerationRequest ; experimental router removed; speed controls and voice edit page; video generation endpoint. WhisperX removed from dependencies."
-  },
-  {
-    "date": "March 2024",
-    "title": "API",
-    "description": "WebSocket interrupt support; get voice embedding route; Redis cache for API keys; streaming switched from Octet to JSON; new model genial-planet-1346 ; voice param required on requests; formatting support. WhisperX for transcription (later removed)."
-  },
-  {
-    "date": "March 2024",
-    "title": "Playground",
-    "description": "Voice cloning in the UI; connection info in JS client; audio downloadable; transcript length validation (max 400 chars, empty rejected); improved UX and crash handling when API key missing; welcome message and icons. API key creation on sign-up via Clerk webhooks."
-  },
-  {
-    "date": "March 2024",
-    "title": "Other",
-    "description": "Voice cloning and connection info in JS client."
-  },
-  {
     "date": "July 2026",
     "title": "Speech-to-Text",
     "description": "Keyterm prompting for better accuracy — Set domain-specific terms, brand or product names, and rare or invented words so the model transcribes them correctly. See the keyterms guide , and try it out on the Playground or API . Improved Playground features — Watch transcription in real time on a sample clip or your own audio. Configure keyterms and adjust turn detection sensitivity right in the Speech-to-Text Playground ."
@@ -373,6 +193,186 @@
     "date": "January 2026",
     "title": "Line",
     "description": "Line SDK v0.2 — Repo . Improved DX, long-running tool-call handling, committed turns , better turn-taking and transcription."
+  },
+  {
+    "date": "December 2024",
+    "title": "API",
+    "description": "Pricing updates; character usage columns migrated to bigint; presign URLs for Pro Voice Clone; voices/<id>/conditioning endpoint; file to dataset in presign; userID-level endpoint restrictions; Stripe Customer ID on checkout. EU deployment and Hindi HC fixes."
+  },
+  {
+    "date": "December 2024",
+    "title": "Playground",
+    "description": "New model on Playground highlighting transcript following improvements (demo, not GA). Blog and play.cartesia.ai live."
+  },
+  {
+    "date": "December 2024",
+    "title": "Models / Voices",
+    "description": "Model aliasing updated for sonic and sonic-preview ; twilight-morning in API and enterprise; conditioning entries for voice clone and multilingual. Embedding search for LoRA voice selection."
+  },
+  {
+    "date": "December 2024",
+    "title": "Other",
+    "description": "Infrastructure and scaling updates. State of Voice blog and map."
+  },
+  {
+    "date": "November 2024",
+    "title": "API",
+    "description": "Cartesia-Version 2024-11-13 — Upgrade to new API version; unified clone voice endpoint ; datasets support; files endpoint pagination; FineTuneRequest status; fine-tunes API in Playground; presign URLs for Pro Voice Clone; Flush Done event for manual WebSocket flushing; <pause> tag for continuations. GCP Enterprise."
+  },
+  {
+    "date": "November 2024",
+    "title": "Playground",
+    "description": "Changes for new API; replay suite; GCP Enterprise."
+  },
+  {
+    "date": "November 2024",
+    "title": "Models / Voices",
+    "description": "Flush Done event for manual flushing in WebSocket; <pause> tag for continuations within a single transcript; spelling fixes; manual flush and flush ID. Empty encoding field allowed for mp3."
+  },
+  {
+    "date": "November 2024",
+    "title": "Docs",
+    "description": "API version 2024-11-13 : Sonic 2, capability guides (clone, pronunciations, speed/emotion, continuations, localize), formatting for Sonic 2. Integrations: LiveKit, Pipecat, Rasa, Thoughtly, Twilio, MCP. Enterprise: SSO, organizations. See API Conventions ."
+  },
+  {
+    "date": "October 2024",
+    "title": "API",
+    "description": "Cartesia JS bytes endpoint; gen blocks removed from character counting; health checks and middleware; user-level queueing with queue length cap and timeout; 10× queue size rejection; Slang (continuations) and ConditioningData; voice changer JS SDK. Remove max limit from Playground."
+  },
+  {
+    "date": "October 2024",
+    "title": "Playground",
+    "description": "GCP: API and ingress for GCP US Central. Queueing: user-level queueing in API gateway; queue length cap and queuedRequest timeout. Voice Changer: Playground UI polish; ConditioningData as part of ResolvedVoice; Slang rollout; flush on start/end of spell tags. LoRA release UI; onboarding data upsert fix; welcome page submit loading state; enterprise contact links."
+  },
+  {
+    "date": "October 2024",
+    "title": "Other",
+    "description": "Canonical linking and sitemap. Blog and navigation (Blog, Careers) updates."
+  },
+  {
+    "date": "September 2024",
+    "title": "API",
+    "description": "User-level queueing; queue size and websocket queueing rejection; api_status field for voice API usability; LoRA pricing and UX cleanup; flush all audio on DONE token (including CB); user option to obfuscate transcripts in logs. LoRA and load balancer improvements."
+  },
+  {
+    "date": "September 2024",
+    "title": "Playground",
+    "description": "Function calling ; agent creation, tests, and dev setup; voice agent infrastructure enabled. LoRA: HiFi cloning endpoint and Playground page; 8 new voices on Playground; Indian accent. Voice Changer Playground UI; JS SDK for voice changer. Language added to TTS request from voices/[id] ; flush all audio on DONE token; user option to obfuscate transcripts in logs."
+  },
+  {
+    "date": "September 2024",
+    "title": "Docs",
+    "description": "Blog and sitemap updates."
+  },
+  {
+    "date": "August 2024",
+    "title": "API",
+    "description": "Reject invalid transcripts (docs and API gateway); no_more_inputs in WebSockets can use voice_embedding instead of voice_id . Improved bad model id handling."
+  },
+  {
+    "date": "August 2024",
+    "title": "Playground",
+    "description": "Localization page in Playground and JS client; dialects and future-compatibility. Switch Playground to voice ID; allow both id and embedding for TTSRequest ; archive voices (kept accessible via API). Replay button; feedback form; fix multilingual recommended voices when switching back to English; better error messaging."
+  },
+  {
+    "date": "August 2024",
+    "title": "Models / Voices",
+    "description": "LoRA support (multiple voices per LoRA, new cache key, easy-brook-lora, vc-flowing-dream)."
+  },
+  {
+    "date": "August 2024",
+    "title": "Other",
+    "description": "On-device homepage launch; proper links for “Request a demo” button. LoRA : multiple voices per LoRA."
+  },
+  {
+    "date": "July 2024",
+    "title": "API",
+    "description": "Voice Conversion endpoint — New API endpoint. Timestamps on WebSocket endpoint; per-generation voice controls (speed, emotion) in API; polar-tree deployed ( sonic-multilingual ); continuous batching support; VocalWave (English) and long-generation support; sonic-english → vocal-wave, sonic-multilingual → ancient-voice aliasing. buffer and mp3 params on /bytes ; MP3 streaming and WAV encoding fixes; request cancellation; empty transcript allowed when continue=false ; Stripe webhook cache clear; subscription cancellation/reactivation; Redis cache for overage; keys endpoints. Clerk-based auth in API."
+  },
+  {
+    "date": "July 2024",
+    "title": "Playground",
+    "description": "Optional enhance flag for voice cloning in JS client, Python client, and Playground; voice update endpoint and docs; gate voice cloning for free users. Prevent playing audio while playback in progress; download button disabled until generation finished; API key deletion clearer with copy button; character usage indicator; subscription and checkout fixes; gating clone form for free users."
+  },
+  {
+    "date": "July 2024",
+    "title": "Docs",
+    "description": "Voice cloning docs; timestamps and continuations; user guides for voice control and Twilio; emotion control and timestamps; “phonemes” terminology. Voice cloning from file."
+  },
+  {
+    "date": "July 2024",
+    "title": "Other",
+    "description": "Python client: continuations support, custom base_url , fallback for websockets; JS client v1.0.1: onError prop on useTTS. Voice controls (speed, emotion) in Python client and docs."
+  },
+  {
+    "date": "June 2024",
+    "title": "API",
+    "description": "Continuations — Support for streaming input via SSE and Bytes; NoMoreInputs signal. Cartesia Version enforced via header; Playground and checkout/subscription endpoints send it. 48 kHz added to valid sample rates; .wav byte streaming; HTTP streaming endpoint for raw bytes; API standardization (backwards-compatible); new voices endpoints; mulaw and alaw backwards compatibility; Python client v1.0.0 (overhaul, output_format ); JS client: pcm_s16le , pcm_alaw , pcm_mulaw and improved typing; caching for voices; context_id in WebSocket response and docs. Stripe webhooks for renewals and expiration; OpenAPI spec update."
+  },
+  {
+    "date": "June 2024",
+    "title": "Playground",
+    "description": "Multilingual: language parameter on voices API and in API; Playground language selection; multilingual copy on homepage; default sonic-english → feasible-haze. Mobile layout improvements; multilingual UI papercuts; voice cloning and empty transcript styling fixes; filtering moved from voices/[id] to Speak page."
+  },
+  {
+    "date": "June 2024",
+    "title": "Models / Voices",
+    "description": "sonic-multilingual and sonic-english aliasing; language column on voices. Recommended voices."
+  },
+  {
+    "date": "June 2024",
+    "title": "Docs",
+    "description": "Version 2024-06-10 : get-started, API conventions, integrations (LiveKit, Pipecat, Rasa, Thoughtly, Twilio, MCP), clone voices, embeddings/voice mixing. See API Conventions ."
+  },
+  {
+    "date": "June 2024",
+    "title": "Other",
+    "description": "ToS changes; revised pricing tiers; legal notices on sign-in and sign-up; overage toggle in Playground. Character usage limit blocks WebSocket when exceeded."
+  },
+  {
+    "date": "May 2024",
+    "title": "API",
+    "description": "Cartesia Version header; HTTP streaming for raw bytes; new voices endpoints; mulaw/alaw backwards compatibility; API standardization (backwards-compatible); Python client v1.0.0; JS client structure overhaul. Clone voice upload fix."
+  },
+  {
+    "date": "May 2024",
+    "title": "Playground",
+    "description": "Redesign and Sonic launch copy; subscriptions page; favoriting voices; emotion and speed sliders ; User vs Default voices; tags (Age, Accent) in DB and Playground; sample_text field (API Gateway and Playground); buffer streamed audio before playback; character usage indicator; API key auto-created on user creation; custom sign-in/sign-up and 404 on sign-out fix; disable generation button while audio playing; human-readable model names and skilled-cherry. Character limit increase."
+  },
+  {
+    "date": "May 2024",
+    "title": "Models / Voices",
+    "description": "Human-readable model names; skilled-cherry; polar-tree ( sonic-multilingual ); continuations and output format; Python client numpy array support. Voice cloning disclaimer."
+  },
+  {
+    "date": "May 2024",
+    "title": "Docs",
+    "description": "Mintlify docs added."
+  },
+  {
+    "date": "May 2024",
+    "title": "Other",
+    "description": "Stripe webhooks for subscriptions; subscription cancellation and reactivation; character usage checks on generation routes; free subscription by default; Scale plan limit (8M chars/month); checkout and receipts. Custom sign-in/sign-up pages."
+  },
+  {
+    "date": "April 2024",
+    "title": "API",
+    "description": "model_id added as parameter to generate; minimum transcript length enforced; voice moved to AudioGenerationRequest ; experimental router removed; speed controls and voice edit page; video generation endpoint. WhisperX removed from dependencies."
+  },
+  {
+    "date": "March 2024",
+    "title": "API",
+    "description": "WebSocket interrupt support; get voice embedding route; Redis cache for API keys; streaming switched from Octet to JSON; new model genial-planet-1346 ; voice param required on requests; formatting support. WhisperX for transcription (later removed)."
+  },
+  {
+    "date": "March 2024",
+    "title": "Playground",
+    "description": "Voice cloning in the UI; connection info in JS client; audio downloadable; transcript length validation (max 400 chars, empty rejected); improved UX and crash handling when API key missing; welcome message and icons. API key creation on sign-up via Clerk webhooks."
+  },
+  {
+    "date": "March 2024",
+    "title": "Other",
+    "description": "Voice cloning and connection info in JS client."
   },
   {
     "date": "December 2025",

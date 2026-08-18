@@ -33,12 +33,19 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          set -e
           broken=$(grep -o 'BROKEN_TARGET=.*' run-output.log | cut -d= -f2 | sort -u)
+          if [ -z "$broken" ]; then
+            echo "Run failed but found no BROKEN_TARGET markers — not a healable scraper break (e.g. a missing collectorId or CLI auth issue). See the 'Run scrapers' log above."
+            exit 1
+          fi
+          # heal-and-rerun.mjs already reruns and verifies each target it heals,
+          # so there's no need to re-scrape everything again afterwards — that
+          # would just re-scrape targets that already succeeded, for no benefit.
+          failed=0
           for name in $broken; do
-            node scripts/heal-and-rerun.mjs "$name" "extraction returned no results in the last run, the page structure likely changed" || true
+            node scripts/heal-and-rerun.mjs "$name" "extraction returned no results in the last run, the page structure likely changed" || failed=1
           done
-          node scripts/run-pipeline.mjs
+          exit $failed
 
       - name: Commit new snapshots
         if: always()

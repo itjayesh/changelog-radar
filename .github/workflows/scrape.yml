@@ -25,21 +25,23 @@ jobs:
         id: run
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: node scripts/run-pipeline.mjs
+        run: node scripts/run-pipeline.mjs > run-output.log 2>&1; code=$?; cat run-output.log; exit $code
         continue-on-error: true
 
-      - name: Self-heal any broken target and re-run
+      - name: Self-heal broken targets and re-run
         if: steps.run.outcome == 'failure'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           set -e
-          for name in $(node -e "console.log(require('./config/targets.json').targets.map(t=>t.name).join(' '))"); do
+          broken=$(grep -o 'BROKEN_TARGET=.*' run-output.log | cut -d= -f2 | sort -u)
+          for name in $broken; do
             node scripts/heal-and-rerun.mjs "$name" "extraction returned no results in the last run, the page structure likely changed" || true
           done
           node scripts/run-pipeline.mjs
 
       - name: Commit new snapshots
+        if: always()
         run: |
           git config user.name "changelog-radar-bot"
           git config user.email "actions@users.noreply.github.com"

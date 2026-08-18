@@ -4,9 +4,12 @@ const NPX = process.platform === "win32" ? "npx.cmd" : "npx";
 const IS_WIN = process.platform === "win32";
 
 // On Windows, shell:true just joins argv with spaces before handing it to cmd.exe,
-// so any argument containing whitespace has to be quoted ourselves first.
+// so every argument has to be quoted ourselves first — quoting only when whitespace
+// is present would still let cmd.exe metacharacters (&, |, ^, %, <, >) in an
+// unquoted argument (e.g. a heal description with no spaces around an "&") be
+// interpreted as shell syntax instead of passed through literally.
 function winQuote(arg) {
-  return /\s/.test(arg) ? `"${arg.replace(/"/g, '\\"')}"` : arg;
+  return `"${String(arg).replace(/"/g, '\\"')}"`;
 }
 
 // Runs `npx -p @brightdata/cli bdata <args>` and returns { status, stdout, stderr }.

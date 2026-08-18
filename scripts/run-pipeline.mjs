@@ -7,6 +7,26 @@ const config = JSON.parse(readFileSync(CONFIG_PATH, "utf8"));
 const onlyName = process.argv[2]; // optional: run a single target by name
 const webhook = process.env.DISCORD_WEBHOOK_URL;
 
+// Bright Data returns one wrapper object per scraped page, not one per changelog
+// entry — deepgram/cartesia nest entries under `changelog_entries`, elevenlabs
+// groups them under `entries` with a shared `date`. Flatten to real entries so
+// diffing and the Discord digest operate on individual changelog items instead
+// of whole pages (a single changed entry would otherwise mark unrelated entries
+// on the same page as "added" too).
+function flattenEntries(pages) {
+  const out = [];
+  for (const page of pages) {
+    if (page && Array.isArray(page.changelog_entries)) {
+      out.push(...page.changelog_entries);
+    } else if (page && Array.isArray(page.entries)) {
+      for (const e of page.entries) out.push({ date: page.date, ...e });
+    } else {
+      out.push(page);
+    }
+  }
+  return out;
+}
+
 let anyFailed = false;
 const digest = [];
 
@@ -23,21 +43,23 @@ for (const target of config.targets) {
   if (status !== 0) {
     console.error(`[fail] ${target.name}: ${stderr}`);
     anyFailed = true;
-    console.log(`::set-output name=broken_target::${target.name}`); // legacy-safe marker for CI logs
+    console.log(`BROKEN_TARGET=${target.name}`);
     continue;
   }
 
-  const entries = extractJson(stdout);
-  const isEmpty = !entries || (Array.isArray(entries) && entries.length === 0);
-  const crawlerError = Array.isArray(entries) && entries.length > 0 && entries.every((e) => e && typeof e === "object" && "error" in e);
+  const pages = extractJson(stdout);
+  const isEmpty = !pages || (Array.isArray(pages) && pages.length === 0);
+  const crawlerError = Array.isArray(pages) && pages.length > 0 && pages.every((e) => e && typeof e === "object" && "error" in e);
 
   if (isEmpty || crawlerError) {
-    const reason = crawlerError ? entries[0].error : "extraction returned nothing";
+    const reason = crawlerError ? pages[0].error : "extraction returned nothing";
     console.error(`[fail] ${target.name}: ${reason} (site likely changed)`);
     anyFailed = true;
     console.log(`BROKEN_TARGET=${target.name}`);
     continue;
   }
+
+  const entries = flattenEntries(pages);
 
   const dir = new URL(`../data/${target.name}/`, import.meta.url);
   mkdirSync(dir, { recursive: true });

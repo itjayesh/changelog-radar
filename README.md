@@ -27,14 +27,44 @@ reinvent something that already exists.
 4. `npm run run` — runs every scraper, saves a dated snapshot under `data/<target>/`,
    and diffs against `data/<target>/latest.json`.
 
-## Self-healing demo
+## Self-healing, for real
+
+This isn't a staged demo. While building this, the Deepgram collector (`c_msz0byeniqr2tdb79`)
+broke on its own, mid-development, with a genuine crawler error:
+
+```
+Crawler error: Timeout waiting for new .fern-changelog-card-link children in .fern-changelog-timeline
+```
+
+Deepgram's changelog lazy-loads entries, and the scraper was waiting on that to finish
+before extracting anything. Healing it took three rounds, and the process itself surfaced
+a real bug worth documenting:
+
+1. **First heal** (19:17 UTC) — described the timeout, asked the scraper not to wait for
+   lazy-loaded content. `bdata scraper heal` proposed a fix, the preview looked right, approved it.
+   The next full `scraper run` failed with the *exact same error*.
+2. **Second heal** (19:34 UTC) — sharper prompt, explicitly forbidding scroll/pagination.
+   Preview succeeded again. Approved again. Same production failure again.
+3. Turned out `bdata scraper approve` has an `--auto-save` flag — without it, an approval
+   finishes that one healing job but never persists the fix as the collector's active
+   template, so every subsequent `scraper run` kept executing the old broken code. This
+   wasn't documented anywhere obvious; found it in `bdata scraper approve --help`.
+4. **Third heal** (19:39 UTC), same prompt, `--auto-save` now wired into
+   `heal-and-rerun.mjs`'s approve call — the fix persisted. Deepgram now returns 20 live
+   changelog entries. `heal-and-rerun.mjs` and the CI workflow both use `--auto-save` for
+   every heal from here on.
+
+Full timestamps and prompts for all three attempts are in `data/heal-log.json`.
+
+To trigger a heal yourself:
 
 ```
 node scripts/heal-and-rerun.mjs deepgram "price selector / changelog card markup changed, extraction returns empty"
 ```
 
-This calls `bdata scraper heal`, then `bdata scraper approve`, then re-runs that one
-target — same Collector ID throughout.
+This calls `bdata scraper heal`, then `bdata scraper approve --auto-save`, then re-runs
+and verifies that one target — same Collector ID throughout, logging the real outcome
+(not just whether the approval succeeded) to `data/heal-log.json`.
 
 ## CI
 
@@ -42,6 +72,14 @@ target — same Collector ID throughout.
 comes back empty, it automatically heals + approves + re-runs before failing the job,
 then commits the new snapshots back to the repo. Secrets needed: `BRIGHTDATA_API_KEY`,
 optionally `DISCORD_WEBHOOK_URL`.
+
+## Dashboard
+
+A UI concept for this exists separately (mock data, not wired to the JSON this pipeline
+actually produces yet) — three views: source overview with Collector IDs and status,
+a unified changelog feed, and a self-healing log modeled on the real timeline above.
+Not linked here yet since it isn't wired to live data; treat it as a design reference,
+not the submission's data layer.
 
 ## Project layout
 

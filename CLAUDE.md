@@ -8,3 +8,8 @@ Collector IDs elsewhere.
 - To run all scrapers: `npm run run`.
 - To heal a broken one: `node scripts/heal-and-rerun.mjs <name> "<what broke>"`.
 - Never rebuild a scraper with `scraper create` if it already has a `collectorId` — heal it instead.
+- Never call `bdata scraper approve` without `--auto-save` — without it the approval
+  finishes that heal job but never persists the fix, so every later `scraper run` keeps
+  executing the old broken code (this actually happened, see README's "Self-healing,
+  for real"). `scripts/heal-and-rerun.mjs` already does this correctly — don't bypass it
+  by calling the CLI directly.

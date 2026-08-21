@@ -75,11 +75,14 @@ optionally `DISCORD_WEBHOOK_URL`.
 
 ## Dashboard
 
-A UI concept for this exists separately (mock data, not wired to the JSON this pipeline
-actually produces yet) — three views: source overview with Collector IDs and status,
-a unified changelog feed, and a self-healing log modeled on the real timeline above.
-Not linked here yet since it isn't wired to live data; treat it as a design reference,
-not the submission's data layer.
+https://claude.ai/code/artifact/3081acb8-c78c-4867-8254-ffbfa5131c2e
+
+Three views — source overview (real Collector IDs and entry counts), a unified
+changelog feed, and the self-healing log — populated with real data pulled from this
+project's own `data/` and `heal-log.json` as of Aug 21, 2026. It's a static snapshot,
+not live-refreshing against the repo yet (Collector ID as a live production API is what
+`scripts/run-pipeline.mjs` + the CI workflow demonstrate instead). If the link 404s,
+it needs to be shared from the page's share menu — Artifacts are private by default.
 
 ## Project layout
 

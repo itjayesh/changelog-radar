@@ -1,5 +1,240 @@
 [
   {
+    "date": "December 2025",
+    "title": "API",
+    "description": "sonic-3-latest (preview) and dated sonic-3-YYYY-MM-DD snapshots. sonic-3-latest added to Playground TTS with banner when selected. See Changelog 2026 ."
+  },
+  {
+    "date": "December 2025",
+    "title": "Voice changes",
+    "description": "Voice Library — December: 25 new voices across 6 languages (12 English, 6 Hindi, 4 Arabic, 1 Spanish, 1 Japanese); 14 featured. Voice library changes; featured voice badge on voice page; /voices/recent endpoint."
+  },
+  {
+    "date": "December 2025",
+    "title": "Playground",
+    "description": "Report generation (report button, alert when user reports). Voice move ; archive and publish voices. PVC : custom PVC voices UI, multiple user errors surfaced to UI, feature flag for custom model during creation. Pronunciation dicts : new backend APIs, generator on create/edit, case sensitivity badge. Agents : new text-to-agent UI, create agent from GitHub repo tarball , system prompt generator for UI agent. Narrations sunset notice; TTS History pagination; auth strategy for access-tokens. sonic-3-latest banner and naming."
+  },
+  {
+    "date": "December 2025",
+    "title": "Other",
+    "description": "PVC, STT, and agent improvements. Error handling and error codes."
+  },
+  {
+    "date": "November 2025",
+    "title": "API",
+    "description": "Improved error handling and public error responses; cache invalidation by voice ID. IPVC train API (remove markAsReady ); dataset files overfetch fix; default voice logic fix."
+  },
+  {
+    "date": "November 2025",
+    "title": "Playground",
+    "description": "Pronunciation dicts migrate to new backend APIs; persist visual theme to DB; PVC pipeline error and recommendations. Call logs conversation view default; TTS textarea height fix; Sonic-3 model for partners shown. Billing overage “blood bar” and alert fixes; PVC gate for Startup plan. Pronunciation dict generator on create/edit; API version in dialog; featured voice toggle; narrations model selection."
+  },
+  {
+    "date": "November 2025",
+    "title": "Line / Agents",
+    "description": "No user audio warning (250ms); Pipecat DeepgramNovaVADFilter. Call recording and artifact storage fixes."
+  },
+  {
+    "date": "November 2025",
+    "title": "Models / Voices",
+    "description": "Sonic 3 PVC and normalizer updates; LoRA and PVC error handling; expand option for dataset file count. preview_file_url ; tags_operator on GET /voices; restrict delete to non-public voices; owner_id check for fine tune voices; user_errors for PVCs. New Arabic accents; African French and Canadian French."
+  },
+  {
+    "date": "October 2025",
+    "title": "Model changes",
+    "description": "Sonic 3 launch (Oct 27) — sonic-3-2025-10-27 stable snapshot released; 42 languages; volume, speed, and emotion controls. Real-time conversation with emotion and laughter; ~190ms median latency. See Sonic 3 and Volume, Speed, and Emotion ."
+  },
+  {
+    "date": "October 2025",
+    "title": "Other",
+    "description": "Continued PVC, STT, and agent improvements; error handling and public errors; manifone voices; Sonic 3 PVC and normalizer updates. Transcript buffer multilingual and Thai pronunciation dictionary fix; TTFA buffering and reporting; Voice Conversion operator reload; audio norm operator."
+  },
+  {
+    "date": "September 2025",
+    "title": "API",
+    "description": "user_id to owner_id in API (model aliasing / ownership). Improved error handling and version/limit checks."
+  },
+  {
+    "date": "September 2025",
+    "title": "Line / Agents",
+    "description": "Warning if no user audio for 250ms+; Pipecat DeepgramNovaVADFilter for spurious on_speech_started . Call recording and artifact storage fixes."
+  },
+  {
+    "date": "September 2025",
+    "title": "Models / Voices",
+    "description": "STT: Migrate STT providers to Deepgram where appropriate; Deepgram for non-English or language-detect agents; word-level user text chunks. Sonic 3 / PVC: Sonic 3 PVC updates; Hindi Sonic 3 normalizer revert; LoRA data processing and expand option for dataset file count; PVC errors to webhook. Manifone new voice; African French and Canadian French accents; partner agents can configure TTS models."
+  },
+  {
+    "date": "September 2025",
+    "title": "Other",
+    "description": "LoRA bugfixes."
+  },
+  {
+    "date": "August 2025",
+    "title": "API",
+    "description": "Production-facing agent WebSocket; cancel endpoint for ending live calls. Improved error handling and public error codes; cache invalidation by voice ID."
+  },
+  {
+    "date": "August 2025",
+    "title": "Playground",
+    "description": "Telephony: stop billing for customer-managed numbers; Cartesia vs Twilio param separation. Outbound number management columns."
+  },
+  {
+    "date": "August 2025",
+    "title": "Line / Agents",
+    "description": "Deepgram Nova VAD ( utterance_end_ms configurable via vad_stop_secs )."
+  },
+  {
+    "date": "August 2025",
+    "title": "Models / Voices",
+    "description": "New endpoint for <audio> tags; accent column on voice API; max_buffer_delay applied to continuations; eu-north-1 region. GET /voices tags_operator ; preview_file_url ; restrict deleting voices to non-public; check owner_id when listing fine tune voices; user_errors for PVCs from API. New Arabic accents migration."
+  },
+  {
+    "date": "August 2025",
+    "title": "Other",
+    "description": "Max rollover multiplier for credit plans."
+  },
+  {
+    "date": "July 2025",
+    "title": "API",
+    "description": "deploy_error status fix."
+  },
+  {
+    "date": "July 2025",
+    "title": "Playground",
+    "description": "LangChain launched voice agents with Cartesia Sonic TTS. Billing: Stripe customer for enterprise if needed; call runtime logs in call logs side panel; Call Logs UI nits (from June work)."
+  },
+  {
+    "date": "July 2025",
+    "title": "Line / Agents",
+    "description": "Partner pipeline parity with User Agent; concurrency fix (negative concurrency); agent metric LLM credit usage for evals; AgentEvaluations functionality. User Code Connector WS handlers fix; agent end turn handling; summarization system prompt; user_prompt in API; transcript removed from agent metric result; deadlock fix in WS timeout."
+  },
+  {
+    "date": "July 2025",
+    "title": "Other",
+    "description": "Flushing and concurrency fixes."
+  },
+  {
+    "date": "June 2025",
+    "title": "API",
+    "description": "UserCodeAgent deployment URL; cancel endpoint for force-ending live calls via API; Agent EoUD metric; cartesia agent speed-up; user prompt stored separately in agent metrics; agent_evaluations table; async flush for aggregator; User Code Connector WS and last bot turn handling; deployment URL delay on pickup. Concurrency and WS timeout fixes; improved goroutine handling; agent workers /chats timeout increase."
+  },
+  {
+    "date": "June 2025",
+    "title": "Playground",
+    "description": "Call Logs page for agents with data table and side panel; Agents demo with Twilio web dialer, visualizer, and like/dislike feedback; deployment detail page and list; Twilio number provisioning (Parts 1 & 2); GitConnector redeploy on commit; deployment logs; zip upload for deployment; feature flag by organization; agents gated behind feature flag; Deepgram as default STT for agents; orgs v2 (frontend and backend); 20K credits for organizations; enterprise free trial days and email invoice options. Credit usage : separate TTS & STT concurrency panels; STT and Infill charts; voice page copyable fields; call runtime logs in call logs panel."
+  },
+  {
+    "date": "June 2025",
+    "title": "Models / Voices",
+    "description": "STT: Whisper large v3; serve multiple models in STT pipeline; word-level user text chunks. FinetunedSTTContext fixes."
+  },
+  {
+    "date": "May 2025",
+    "title": "API",
+    "description": "Voice conversion in enterprise."
+  },
+  {
+    "date": "May 2025",
+    "title": "Line / Agents",
+    "description": "User code deployments from DB; agent_deployments table; STT cartesia-streaming and Pipecat streaming Whisper; Bedrock proxy for OpenAI-compatible; timestamp bug fixes and default to original timestamps. Partner /chat and /config updates; DTMF support in UserCodeConnector; endpointing architecture."
+  },
+  {
+    "date": "May 2025",
+    "title": "Models / Voices",
+    "description": "STT: Batch engine utilization; Pipecat streaming Whisper. Deepgram STT client url / base_url fix."
+  },
+  {
+    "date": "May 2025",
+    "title": "Other",
+    "description": "Voice clone uploads fix."
+  },
+  {
+    "date": "April 2025",
+    "title": "Breaking",
+    "description": "sonic-2-2025-04-16 — Starting with sonic-2-2025-04-16 , we’re removing support for: Embeddings; stability cloning mode; Experimental controls for speed and emotion. The similarity cloning mode is dramatically better. To control speed and emotion today, use Instant Voice Cloning (e.g. FFMPEG, Voice Changer, or instant clones from sonic-2-2025-03-07 embeddings). Users who need embeddings or experimental controls can use API version 2024-11-13 with model sonic-2-2025-03-07 (both still available). See Older models ."
+  },
+  {
+    "date": "April 2025",
+    "title": "API",
+    "description": "listVoices by ID for single voice; warm-monkey PVC; access tokens (JWT); Cartesia-Version 2024-11-13; phoneme/original timestamps language check; TTS History source; LoRA from fine-tune checkpoints; context expiry replaced by input stream delay. sonic-2 and sonic-2-2025-04-16 ignore experimental controls on TTS generations; voice cloning supports only similarity clones. Removed embeddings from all endpoints; voices may only be specified by Voice ID; /tts cannot be called with voice embeddings. Deprecated /voices/create and /voices/mix ."
+  },
+  {
+    "date": "March 2025",
+    "title": "Breaking",
+    "description": "sonic-2-2025-03-07 is the last Sonic 2 snapshot supporting voice embeddings and experimental controls. Use with API version 2024-11-13 for legacy behavior. sonic-preview → JollyTotem, RoseLion deprecated; sonic-2 alias to jolly-totem for speaker switching. See Older models ."
+  },
+  {
+    "date": "March 2025",
+    "title": "API",
+    "description": "Cartesia-Version updated to 2024-11-13 ; model latency via header on bytes endpoint; new Sonic PVC model warm-monkey; listVoices by ID (single voice); access tokens (JWT signing, validation); API-level check for languages supporting phoneme and original timestamps. Organizations and billing; free credits 10k → 20k; overages product; subscription cache invalidation webhook; TTS History source column (api, playground, narrations); LoRA voices from base VoiceVariation and checkpoint for fine tunes."
+  },
+  {
+    "date": "March 2025",
+    "title": "Playground",
+    "description": "sonic-2 and sonic-turbo aliases launched; Sonic 2 / Sonic Turbo messaging (Turbo = 40ms latency). cartesia.ai/sonic and playground updates."
+  },
+  {
+    "date": "March 2025",
+    "title": "Line / Agents",
+    "description": "Agent ID in websocket URL; telephony info on partner calls; Pipecat version upgrade; partner demo tool calls; warm-monkey PVC model; prespeak and function call flow updates. Twilio voice routes support agent IDs; Keypad DTMF on agent; half-duplex STT and LLM context; original timestamps support in API."
+  },
+  {
+    "date": "March 2025",
+    "title": "Other",
+    "description": "sonic-pvc alias and DryVoice as sonic-pvc model. Python SDK announced."
+  },
+  {
+    "date": "February 2025",
+    "title": "API",
+    "description": "listVoices by ID; localize endpoint voice name fix; 400s for bad body params; text forcing max transcript length; OpenAI-compatible STT server ; agent with local STT; voice tags; on-device transcripts in evals; jolly-totem as default sonic-preview. S2S and Agents foundational blocks."
+  },
+  {
+    "date": "February 2025",
+    "title": "Playground",
+    "description": "Instant cloning enabled for free users; voice tags; localize refactored to use conditioning; listVoices can query by ID for single voice; Sarah (Similarity) and Southern Woman migrations; on-device transcripts. Narrations settings (JSONB)."
+  },
+  {
+    "date": "February 2025",
+    "title": "Line / Agents",
+    "description": "Agent with local STT; foundational S2S + Agents blocks; design and pipeline work."
+  },
+  {
+    "date": "February 2025",
+    "title": "Models / Voices",
+    "description": "STT: cartesia-streaming and Pipecat streaming Whisper; on-device transcripts."
+  },
+  {
+    "date": "January 2025",
+    "title": "API",
+    "description": "sonic-lite added to API; EU deployment for prod API; save option for TTS bytes handler; CORS header for Cartesia-File-ID ; Stripe credits default to char_limit in checkout; Redis cache for overage settings; polar-mountain and VC in EU; ListFiles paginator fix. Eval break/spell tags and replacement/normalization mode."
+  },
+  {
+    "date": "January 2025",
+    "title": "Models / Voices",
+    "description": "sonic-preview routed to MisunderstoodFrog; polar-mountain added and staged; visionary-yogurt timestamp requests for any language. jolly-totem as default sonic-preview."
+  },
+  {
+    "date": "September 2026",
+    "title": "Speech-to-Text",
+    "description": "Ink-2 is now multilingual — Ink 2 supports four new languages: Spanish, French, Hindi and Japanese with industry leading transcription accuracy and semantic endpointing. Try it in the playground or through the API ."
+  },
+  {
+    "date": "September 2026",
+    "title": "Text-to-Speech",
+    "description": "More control over pronunciation — Pronunciation dictionaries on Sonic 3.6 now ignore case by default, so “new york,” “New York,” and “NEW YORK” share one entry. For terms where capitalization changes the meaning, turn case sensitivity on for that entry in the Playground or API. See Case sensitivity . Cleaner English inside Japanese and Chinese text — We improved spacing around Latin-script words in Japanese and Chinese transcripts, so Sonic 3.6 reads embedded English correctly. Sonic 3.6 for self-hosted deployments — The September 17 release brings self-hosted customers Sonic 3.6’s quality improvements, Odia and Urdu support, and locale-aware normalization. It also cuts stalls during voice updates. If an air-gapped license proxy goes down, you now have 24 hours to fix it instead of 5 minutes. See release details ."
+  },
+  {
+    "date": "September 2026",
+    "title": "Voice Agents",
+    "description": "Personalize every call with dynamic variables — Add {{variable}} placeholders to your agent’s instructions, greeting, and tools. Fill them in when a call starts, for each batch recipient, or mid-call from a webhook response. Every call also gets built-in variables like the caller’s number and the current time. See Dynamic variables . Transfer calls to SIP URIs — Agents can now transfer calls to SIP URIs as well as phone numbers, and a dynamic variable can set the destination for each call (requires SIP trunking). See Transfer to number . Keep the conversation going while tools run — Webhook and client tools can now run in the background. Choose immediate or async in a tool’s advanced settings, or set execution_mode in the API. See Execution settings . Inactivity check-ins — If a caller goes silent, the agent checks in after 8 seconds by default. If the silence continues, it says goodbye and ends the call. You can set both timers per agent in the Playground or under config.turn in the API. See Turn settings . Start from a template — Create an agent from one of five ready-made templates. Review changes before you publish — When you publish in the Playground, you’ll see exactly what will change on live calls: prompt and greeting diffs, added or removed tools, and settings before and after. Each publish saves a version you can list and restore through the API. See Versions . See where your spend goes — The Voice Agents tab of the Usage dashboard now breaks spend into voice, LLM, and telephony costs. It also shows cost per call and charts calls or minutes by agent. To follow a batch campaign from start to finish, filter the call list by batch ID and start time. See List Calls . Claude Sonnet 5 for agents — Sonnet 5 is now in the hosted LLM catalog. Pick it in the Playground, or set the model ID to claude-sonnet-5 . See LLMs ."
+  },
+  {
+    "date": "September 2026",
+    "title": "Voices",
+    "description": "Your PVC carries across model upgrades — New Professional Voice Clones are now trained automatically on all eligible models , so you can switch or upgrade Cartesia TTS models and keep the same voice. 85 new public voices — Across 24 languages, including Hindi, Arabic, Indonesian, and Swedish. More multilingual voices — 58 voices in the voice library now speak up to 27 languages and accents natively."
+  },
+  {
     "date": "August 2026",
     "title": "Sonic 3.6",
     "description": "Sonic 3.6 is an update to Sonic 3.5 — generally available from August 27 on sonic-3.6 . ​ What’s new More natural speech, pacing, and emotional expression — the model adapts intonation, pacing, and emotiveness to the context of the transcript, with no SSML tags or explicit instructions. In blind head-to-head testing, listeners preferred Sonic 3.6 to Sonic 3.5 by nearly two to one on English transcripts. Step-change multilingual naturalness — native-sounding pronunciation and accents across 44 languages / 61 locales. Two new languages — Odia ( or ) and Urdu ( ur ), including voices and IVC support. Hindi and Hinglish transcript following — romanized and Latin-script Hindi follows the transcript accurately. Set text normalization independently of the spoken language with the new normalization field — see Normalization . Non-English alphanumerics — spelled-out letters, codes, and IDs use native letter names and accent, in all supported languages. In-transcript disfluencies — written disfluencies (“It’s on, uh, Fifth Street”) now shift pacing and intonation to sound like natural hesitation. English heteronyms — higher pronunciation accuracy on heteronyms like “read,” “bass,” and “live” in context. ​ How to try it Point your API call or Playground request at sonic-3.6 , or pin the dated snapshot sonic-3.6-2026-08-27 for production traffic. Keep your existing voice IDs, request shape, and prompting — no code changes required. Try it in the TTS Playground . For customers currently using sonic-3.5 , you will have to manually repoint production traffic to sonic-3.6-2026-08-27 or sonic-3.6 . ​ What to know before you migrate Your voice clones carry over. Instant and Professional Voice Clones work on Sonic 3.6 with the same voice IDs — nothing to recreate. Human evals confirm voices sound the same as on Sonic 3.5. No changes to the feature surface. Prompting guidance, SSML tags, timestamps, codec, and speed and volume controls all behave as they do on Sonic 3.5."
@@ -403,220 +638,5 @@
     "date": "March 2024",
     "title": "Other",
     "description": "Voice cloning and connection info in JS client."
-  },
-  {
-    "date": "December 2025",
-    "title": "API",
-    "description": "sonic-3-latest (preview) and dated sonic-3-YYYY-MM-DD snapshots. sonic-3-latest added to Playground TTS with banner when selected. See Changelog 2026 ."
-  },
-  {
-    "date": "December 2025",
-    "title": "Voice changes",
-    "description": "Voice Library — December: 25 new voices across 6 languages (12 English, 6 Hindi, 4 Arabic, 1 Spanish, 1 Japanese); 14 featured. Voice library changes; featured voice badge on voice page; /voices/recent endpoint."
-  },
-  {
-    "date": "December 2025",
-    "title": "Playground",
-    "description": "Report generation (report button, alert when user reports). Voice move ; archive and publish voices. PVC : custom PVC voices UI, multiple user errors surfaced to UI, feature flag for custom model during creation. Pronunciation dicts : new backend APIs, generator on create/edit, case sensitivity badge. Agents : new text-to-agent UI, create agent from GitHub repo tarball , system prompt generator for UI agent. Narrations sunset notice; TTS History pagination; auth strategy for access-tokens. sonic-3-latest banner and naming."
-  },
-  {
-    "date": "December 2025",
-    "title": "Other",
-    "description": "PVC, STT, and agent improvements. Error handling and error codes."
-  },
-  {
-    "date": "November 2025",
-    "title": "API",
-    "description": "Improved error handling and public error responses; cache invalidation by voice ID. IPVC train API (remove markAsReady ); dataset files overfetch fix; default voice logic fix."
-  },
-  {
-    "date": "November 2025",
-    "title": "Playground",
-    "description": "Pronunciation dicts migrate to new backend APIs; persist visual theme to DB; PVC pipeline error and recommendations. Call logs conversation view default; TTS textarea height fix; Sonic-3 model for partners shown. Billing overage “blood bar” and alert fixes; PVC gate for Startup plan. Pronunciation dict generator on create/edit; API version in dialog; featured voice toggle; narrations model selection."
-  },
-  {
-    "date": "November 2025",
-    "title": "Line / Agents",
-    "description": "No user audio warning (250ms); Pipecat DeepgramNovaVADFilter. Call recording and artifact storage fixes."
-  },
-  {
-    "date": "November 2025",
-    "title": "Models / Voices",
-    "description": "Sonic 3 PVC and normalizer updates; LoRA and PVC error handling; expand option for dataset file count. preview_file_url ; tags_operator on GET /voices; restrict delete to non-public voices; owner_id check for fine tune voices; user_errors for PVCs. New Arabic accents; African French and Canadian French."
-  },
-  {
-    "date": "October 2025",
-    "title": "Model changes",
-    "description": "Sonic 3 launch (Oct 27) — sonic-3-2025-10-27 stable snapshot released; 42 languages; volume, speed, and emotion controls. Real-time conversation with emotion and laughter; ~190ms median latency. See Sonic 3 and Volume, Speed, and Emotion ."
-  },
-  {
-    "date": "October 2025",
-    "title": "Other",
-    "description": "Continued PVC, STT, and agent improvements; error handling and public errors; manifone voices; Sonic 3 PVC and normalizer updates. Transcript buffer multilingual and Thai pronunciation dictionary fix; TTFA buffering and reporting; Voice Conversion operator reload; audio norm operator."
-  },
-  {
-    "date": "September 2025",
-    "title": "API",
-    "description": "user_id to owner_id in API (model aliasing / ownership). Improved error handling and version/limit checks."
-  },
-  {
-    "date": "September 2025",
-    "title": "Line / Agents",
-    "description": "Warning if no user audio for 250ms+; Pipecat DeepgramNovaVADFilter for spurious on_speech_started . Call recording and artifact storage fixes."
-  },
-  {
-    "date": "September 2025",
-    "title": "Models / Voices",
-    "description": "STT: Migrate STT providers to Deepgram where appropriate; Deepgram for non-English or language-detect agents; word-level user text chunks. Sonic 3 / PVC: Sonic 3 PVC updates; Hindi Sonic 3 normalizer revert; LoRA data processing and expand option for dataset file count; PVC errors to webhook. Manifone new voice; African French and Canadian French accents; partner agents can configure TTS models."
-  },
-  {
-    "date": "September 2025",
-    "title": "Other",
-    "description": "LoRA bugfixes."
-  },
-  {
-    "date": "August 2025",
-    "title": "API",
-    "description": "Production-facing agent WebSocket; cancel endpoint for ending live calls. Improved error handling and public error codes; cache invalidation by voice ID."
-  },
-  {
-    "date": "August 2025",
-    "title": "Playground",
-    "description": "Telephony: stop billing for customer-managed numbers; Cartesia vs Twilio param separation. Outbound number management columns."
-  },
-  {
-    "date": "August 2025",
-    "title": "Line / Agents",
-    "description": "Deepgram Nova VAD ( utterance_end_ms configurable via vad_stop_secs )."
-  },
-  {
-    "date": "August 2025",
-    "title": "Models / Voices",
-    "description": "New endpoint for <audio> tags; accent column on voice API; max_buffer_delay applied to continuations; eu-north-1 region. GET /voices tags_operator ; preview_file_url ; restrict deleting voices to non-public; check owner_id when listing fine tune voices; user_errors for PVCs from API. New Arabic accents migration."
-  },
-  {
-    "date": "August 2025",
-    "title": "Other",
-    "description": "Max rollover multiplier for credit plans."
-  },
-  {
-    "date": "July 2025",
-    "title": "API",
-    "description": "deploy_error status fix."
-  },
-  {
-    "date": "July 2025",
-    "title": "Playground",
-    "description": "LangChain launched voice agents with Cartesia Sonic TTS. Billing: Stripe customer for enterprise if needed; call runtime logs in call logs side panel; Call Logs UI nits (from June work)."
-  },
-  {
-    "date": "July 2025",
-    "title": "Line / Agents",
-    "description": "Partner pipeline parity with User Agent; concurrency fix (negative concurrency); agent metric LLM credit usage for evals; AgentEvaluations functionality. User Code Connector WS handlers fix; agent end turn handling; summarization system prompt; user_prompt in API; transcript removed from agent metric result; deadlock fix in WS timeout."
-  },
-  {
-    "date": "July 2025",
-    "title": "Other",
-    "description": "Flushing and concurrency fixes."
-  },
-  {
-    "date": "June 2025",
-    "title": "API",
-    "description": "UserCodeAgent deployment URL; cancel endpoint for force-ending live calls via API; Agent EoUD metric; cartesia agent speed-up; user prompt stored separately in agent metrics; agent_evaluations table; async flush for aggregator; User Code Connector WS and last bot turn handling; deployment URL delay on pickup. Concurrency and WS timeout fixes; improved goroutine handling; agent workers /chats timeout increase."
-  },
-  {
-    "date": "June 2025",
-    "title": "Playground",
-    "description": "Call Logs page for agents with data table and side panel; Agents demo with Twilio web dialer, visualizer, and like/dislike feedback; deployment detail page and list; Twilio number provisioning (Parts 1 & 2); GitConnector redeploy on commit; deployment logs; zip upload for deployment; feature flag by organization; agents gated behind feature flag; Deepgram as default STT for agents; orgs v2 (frontend and backend); 20K credits for organizations; enterprise free trial days and email invoice options. Credit usage : separate TTS & STT concurrency panels; STT and Infill charts; voice page copyable fields; call runtime logs in call logs panel."
-  },
-  {
-    "date": "June 2025",
-    "title": "Models / Voices",
-    "description": "STT: Whisper large v3; serve multiple models in STT pipeline; word-level user text chunks. FinetunedSTTContext fixes."
-  },
-  {
-    "date": "May 2025",
-    "title": "API",
-    "description": "Voice conversion in enterprise."
-  },
-  {
-    "date": "May 2025",
-    "title": "Line / Agents",
-    "description": "User code deployments from DB; agent_deployments table; STT cartesia-streaming and Pipecat streaming Whisper; Bedrock proxy for OpenAI-compatible; timestamp bug fixes and default to original timestamps. Partner /chat and /config updates; DTMF support in UserCodeConnector; endpointing architecture."
-  },
-  {
-    "date": "May 2025",
-    "title": "Models / Voices",
-    "description": "STT: Batch engine utilization; Pipecat streaming Whisper. Deepgram STT client url / base_url fix."
-  },
-  {
-    "date": "May 2025",
-    "title": "Other",
-    "description": "Voice clone uploads fix."
-  },
-  {
-    "date": "April 2025",
-    "title": "Breaking",
-    "description": "sonic-2-2025-04-16 — Starting with sonic-2-2025-04-16 , we’re removing support for: Embeddings; stability cloning mode; Experimental controls for speed and emotion. The similarity cloning mode is dramatically better. To control speed and emotion today, use Instant Voice Cloning (e.g. FFMPEG, Voice Changer, or instant clones from sonic-2-2025-03-07 embeddings). Users who need embeddings or experimental controls can use API version 2024-11-13 with model sonic-2-2025-03-07 (both still available). See Older models ."
-  },
-  {
-    "date": "April 2025",
-    "title": "API",
-    "description": "listVoices by ID for single voice; warm-monkey PVC; access tokens (JWT); Cartesia-Version 2024-11-13; phoneme/original timestamps language check; TTS History source; LoRA from fine-tune checkpoints; context expiry replaced by input stream delay. sonic-2 and sonic-2-2025-04-16 ignore experimental controls on TTS generations; voice cloning supports only similarity clones. Removed embeddings from all endpoints; voices may only be specified by Voice ID; /tts cannot be called with voice embeddings. Deprecated /voices/create and /voices/mix ."
-  },
-  {
-    "date": "March 2025",
-    "title": "Breaking",
-    "description": "sonic-2-2025-03-07 is the last Sonic 2 snapshot supporting voice embeddings and experimental controls. Use with API version 2024-11-13 for legacy behavior. sonic-preview → JollyTotem, RoseLion deprecated; sonic-2 alias to jolly-totem for speaker switching. See Older models ."
-  },
-  {
-    "date": "March 2025",
-    "title": "API",
-    "description": "Cartesia-Version updated to 2024-11-13 ; model latency via header on bytes endpoint; new Sonic PVC model warm-monkey; listVoices by ID (single voice); access tokens (JWT signing, validation); API-level check for languages supporting phoneme and original timestamps. Organizations and billing; free credits 10k → 20k; overages product; subscription cache invalidation webhook; TTS History source column (api, playground, narrations); LoRA voices from base VoiceVariation and checkpoint for fine tunes."
-  },
-  {
-    "date": "March 2025",
-    "title": "Playground",
-    "description": "sonic-2 and sonic-turbo aliases launched; Sonic 2 / Sonic Turbo messaging (Turbo = 40ms latency). cartesia.ai/sonic and playground updates."
-  },
-  {
-    "date": "March 2025",
-    "title": "Line / Agents",
-    "description": "Agent ID in websocket URL; telephony info on partner calls; Pipecat version upgrade; partner demo tool calls; warm-monkey PVC model; prespeak and function call flow updates. Twilio voice routes support agent IDs; Keypad DTMF on agent; half-duplex STT and LLM context; original timestamps support in API."
-  },
-  {
-    "date": "March 2025",
-    "title": "Other",
-    "description": "sonic-pvc alias and DryVoice as sonic-pvc model. Python SDK announced."
-  },
-  {
-    "date": "February 2025",
-    "title": "API",
-    "description": "listVoices by ID; localize endpoint voice name fix; 400s for bad body params; text forcing max transcript length; OpenAI-compatible STT server ; agent with local STT; voice tags; on-device transcripts in evals; jolly-totem as default sonic-preview. S2S and Agents foundational blocks."
-  },
-  {
-    "date": "February 2025",
-    "title": "Playground",
-    "description": "Instant cloning enabled for free users; voice tags; localize refactored to use conditioning; listVoices can query by ID for single voice; Sarah (Similarity) and Southern Woman migrations; on-device transcripts. Narrations settings (JSONB)."
-  },
-  {
-    "date": "February 2025",
-    "title": "Line / Agents",
-    "description": "Agent with local STT; foundational S2S + Agents blocks; design and pipeline work."
-  },
-  {
-    "date": "February 2025",
-    "title": "Models / Voices",
-    "description": "STT: cartesia-streaming and Pipecat streaming Whisper; on-device transcripts."
-  },
-  {
-    "date": "January 2025",
-    "title": "API",
-    "description": "sonic-lite added to API; EU deployment for prod API; save option for TTS bytes handler; CORS header for Cartesia-File-ID ; Stripe credits default to char_limit in checkout; Redis cache for overage settings; polar-mountain and VC in EU; ListFiles paginator fix. Eval break/spell tags and replacement/normalization mode."
-  },
-  {
-    "date": "January 2025",
-    "title": "Models / Voices",
-    "description": "sonic-preview routed to MisunderstoodFrog; polar-mountain added and staged; visionary-yogurt timestamp requests for any language. jolly-totem as default sonic-preview."
   }
 ]

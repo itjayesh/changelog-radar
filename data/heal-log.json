@@ -70,5 +70,53 @@
     "step": "verify",
     "ok": false,
     "timestamp": "2026-10-19T16:15:41.832Z"
+  },
+  {
+    "target": "cartesia",
+    "collectorId": "c_msz13klb288chp5xge",
+    "description": "extraction returned no results in the last run, the page structure likely changed",
+    "step": "approve",
+    "ok": true,
+    "timestamp": "2026-10-26T15:40:15.198Z"
+  },
+  {
+    "target": "cartesia",
+    "collectorId": "c_msz13klb288chp5xge",
+    "description": "extraction returned no results in the last run, the page structure likely changed",
+    "step": "verify",
+    "ok": false,
+    "timestamp": "2026-10-26T15:40:16.094Z"
+  },
+  {
+    "target": "deepgram",
+    "collectorId": "c_msz0byeniqr2tdb79",
+    "description": "extraction returned no results in the last run, the page structure likely changed",
+    "step": "approve",
+    "ok": true,
+    "timestamp": "2026-10-26T15:42:43.782Z"
+  },
+  {
+    "target": "deepgram",
+    "collectorId": "c_msz0byeniqr2tdb79",
+    "description": "extraction returned no results in the last run, the page structure likely changed",
+    "step": "verify",
+    "ok": false,
+    "timestamp": "2026-10-26T15:42:44.670Z"
+  },
+  {
+    "target": "elevenlabs",
+    "collectorId": "c_msz0jtju1zg2a2rf9v",
+    "description": "extraction returned no results in the last run, the page structure likely changed",
+    "step": "approve",
+    "ok": true,
+    "timestamp": "2026-10-26T15:49:59.783Z"
+  },
+  {
+    "target": "elevenlabs",
+    "collectorId": "c_msz0jtju1zg2a2rf9v",
+    "description": "extraction returned no results in the last run, the page structure likely changed",
+    "step": "verify",
+    "ok": false,
+    "timestamp": "2026-10-26T15:50:00.698Z"
   }
 ]
